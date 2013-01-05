@@ -147,7 +147,7 @@ class BaseMissoin(object):
         else:
             obj.tasks = reconstruct_tasks(tasks)
             return obj
-        
+
 # ------------------------------------------------------------------------------
 # Exception Mission Classes
 # ------------------------------------------------------------------------------
@@ -163,7 +163,7 @@ class BadFormatMission(ExceptionMission):
         return '\n'.join([
             "Recievied a bad format mission.",
             "-" * 10,
-            self.acc])
+            self.exception.message])
 
 class ValueErrorMission(ExceptionMission):
 
@@ -171,7 +171,7 @@ class ValueErrorMission(ExceptionMission):
         return '\n'.join([
             "Recievied a bad format mission.",
             "-" * 10,
-            self.acc])
+            self.exception.message])
 # ------------------------------------------------------------------------------
 # Gernal Mission Classes
 # ------------------------------------------------------------------------------
@@ -211,8 +211,11 @@ class Readstdin(object):
     """
     def process_stdin(self, fd):
         try:
-            with fd:
-                content = fd.read()
+            try:
+                with fd:
+                    content = fd.read()
+            except IOError:
+                print 1
         except KeyboardInterrupt:
             exit()
         return Mission(content)
@@ -237,11 +240,8 @@ class StreamMission(object):
                 content = fd.read()
         except KeyboardInterrupt:
             exit()
-
-        try:
+        else:
             return Mission.loads(content)
-        except BadMissionMessage as e:
-            logging.error(e)
 
 class ExecMission(StreamMission):
 
@@ -256,7 +256,7 @@ class ExecMission(StreamMission):
     def __call__(self, acc):
         return acc()
 
-class Print(StreamMission):
+class Show(StreamMission):
 
     desc = """
     Print recieved result.
@@ -267,7 +267,7 @@ class Print(StreamMission):
     """
 
     def __call__(self, acc):
-        print acc()
+        return unicode(acc())
 
 class ModifyMission(StreamMission):
 

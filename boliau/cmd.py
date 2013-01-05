@@ -29,14 +29,14 @@ import sys
 from boliau import cmdlib
 from boliau import missionlib
 
+def do_print():
+    cmd = cmdlib.as_command(missionlib.Show(), require_stdin=True)
+    print cmd.call(stdin=sys.stdin)
+
 def do_readstdin():
     cmd = cmdlib.as_command(missionlib.Readstdin(), require_stdin=True)
     cmd.parse_argv()
     print cmd.call(stdin=sys.stdin).dump()
-
-def do_print():
-    cmd = cmdlib.as_command(missionlib.Print(), require_stdin=True)
-    return cmd.call(stdin=sys.stdin)
 
 def do_pycall():
     cmd = cmdlib.as_command(missionlib.PyCall(), require_stdin=True)
