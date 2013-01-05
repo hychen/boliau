@@ -27,7 +27,24 @@
 from boliau import cmdlib
 from boliau.plugins.lp_cli import missionlib
 
-def get():
+def do_format():
+    def _get_formaternamees(modname):
+        m = __import__(modname, fromlist=[modname])
+        return filter(lambda e: not e.startswith('__') and not e.endswith('__'),
+                      dir(m))
+
+    _formatname_help = "format name avaliable: ({0})".format(
+        ', '.join(_get_formaternamees('boliau.lp_cli.formater')))
+
+    cmd = cmdlib.as_command(missionlib.PyCall(), require_stdin=True)
+    cmd.add_argument('formatname', help=_formatname_help)
+    args = cmd.parse_argv()
+    args.func = 'boliau.lp_cli.formater.' + args.formatname
+    #@FIXME: add alias support in cmdlib
+    del(args.formatname)
+    print cmd.call(args, stdin=sys.stdin).dump()
+
+def do_get():
     cmd = cmdlib.as_command(missionlib.Get())
     cmd.add_argument('entry_type',
                      choices=('bug', ),
@@ -37,7 +54,7 @@ def get():
     args = cmd.parse_argv()
     return cmd.call(args)
 
-def searchbugtasks():
+def do_searchbugtasks():
     cmd = cmdlib.as_command(missionlib.SearchBugTasks())
     cmd.add_argument('entry_type',
                      choices=('people','project'),
@@ -64,5 +81,5 @@ def searchbugtasks():
                      help='search text')
     cmd.add_argument('--milestone', dest='milestone', help='milestone name')
     cmd.add_argument('--modified-since')
-    args = cmd.parse_argv()    
+    args = cmd.parse_argv()
     return cmd.call(args)
