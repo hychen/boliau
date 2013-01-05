@@ -190,11 +190,16 @@ class Readstdin(object):
     Type: Any -> Any
     """
     def process_stdin(self, fd):
-        return Mission(fd.read())
+        try:
+            with fd:
+                content = fd.read()
+        except KeyboardInterrupt:
+            exit()
+        return Mission(content)
 
     def __call__(self, acc):
         return acc
-        
+
 class StreamMission(object):
 
     def process_stdin(self, fd):
@@ -205,7 +210,12 @@ class StreamMission(object):
 
         Return: Mission
         """
-        content = fd.read()
+        try:
+            with fd:
+                content = fd.read()
+        except KeyboardInterrupt:
+            exit()
+
         try:
             return Mission.loads(content)
         except BadMissionMessage as e:
@@ -216,11 +226,11 @@ class ExecMission(StreamMission):
     desc = """
     Execute tasks of recieved mission.
     """
-    
+
     epilog = """
     Type: None -> Any
     """
-    
+
     def __call__(self, acc):
         return acc()
 

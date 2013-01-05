@@ -31,6 +31,7 @@ from boliau import missionlib
 
 def do_readstdin():
     cmd = cmdlib.as_command(missionlib.Readstdin(), require_stdin=True)
+    cmd.parse_argv()
     print cmd.call(stdin=sys.stdin).dump()
 
 def do_print():

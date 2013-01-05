@@ -25,6 +25,7 @@
 # FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 # DEALINGS IN THE SOFTWARE.
 from boliau import cmdlib
+from boliau import missionlib as core_missionlib
 from boliau.plugins.lp_cli import missionlib
 
 def do_format():
@@ -34,12 +35,12 @@ def do_format():
                       dir(m))
 
     _formatname_help = "format name avaliable: ({0})".format(
-        ', '.join(_get_formaternamees('boliau.lp_cli.formater')))
+        ', '.join(_get_formaternamees('boliau.plugins.lp_cli.formater')))
 
-    cmd = cmdlib.as_command(missionlib.PyCall(), require_stdin=True)
+    cmd = cmdlib.as_command(core_missionlib.PyCall(), require_stdin=True)
     cmd.add_argument('formatname', help=_formatname_help)
     args = cmd.parse_argv()
-    args.func = 'boliau.lp_cli.formater.' + args.formatname
+    args.func = 'boliau.plugins.lp_cli.formater.' + args.formatname
     #@FIXME: add alias support in cmdlib
     del(args.formatname)
     print cmd.call(args, stdin=sys.stdin).dump()

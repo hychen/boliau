@@ -74,11 +74,16 @@ class Command(object):
         self._mission = mission
 
     def parse_argv(self):
-        if not self.argv:
-            self.argsparser.print_help()
-            exit()
-        else:
+        """parse arguments.
+        """
+        if self.argv:
             return self.argsparser.parse_args(self.argv)
+        else:
+            if self.require_stdin and len(self.argsparser._actions) == 1:
+                return None
+            else:
+                self.argsparser.print_help()
+                exit()
 
     def register_arguments(self, parser_config):
         """Register Argument Configs
@@ -136,12 +141,19 @@ class Command(object):
                 except Exception as e:
                     print "STDIN is not validate: {}".format(e)
                     exit()
-                return self.mission(acc, **kwargs)
             else:
                 print "Error: requires input from STDIN"
                 exit()
         else:
-            return self.mission(**kwargs)
+            acc = None
+
+        try:
+            if acc:
+                return self.mission(acc, **kwargs)
+            else:
+                return self.mission(**kwargs)
+        except KeyboardInterrupt:
+            exit()
 
 def as_command(mission, opt_conf=None, require_stdin=False):
     """Create a Command
