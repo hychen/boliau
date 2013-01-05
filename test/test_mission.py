@@ -25,6 +25,7 @@
 # FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 # DEALINGS IN THE SOFTWARE.
 import unittest
+import pickle
 
 from boliau import missionlib
 
@@ -57,6 +58,7 @@ class MissionTestCase(unittest.TestCase):
         acc = range(1, 10)
         mission = _create_multitasks_mission(acc)
         newmission = missionlib.Mission.loads(mission.dump())
+        self.assertEquals(missionlib.Mission, type(newmission))
         self.assertEquals(acc, newmission.acc)
         self.assertEquals(sum(map(lambda x: x+1, acc)), newmission())
 
@@ -87,7 +89,7 @@ class StreameMissionTestCase(unittest.TestCase):
         acc = missionlib.Mission({'a':[1,2,3]})
         m = missionlib.PyCall()(acc, func='json.dumps')
         self.assertEquals('{"a": [1, 2, 3]}', m())
-        
+
         acc = missionlib.Mission([1,2,3])
         m = missionlib.PyCall()(acc, func='sum')
         self.assertEquals(6, m())
@@ -96,13 +98,37 @@ class StreameMissionTestCase(unittest.TestCase):
         self.assertRaises(missionlib.BadMissionMessage,
                           missionlib.PyCall(), acc, func='a')
 
-    def test_chain(self):
-        m = missionlib.Map()(self.recv_mission,
-                                    command='lambda e: e + 1')
+    def test_chian(self):
+        m = missionlib.Map()(missionlib.Mission([1, 2, 3, 4]),
+                             command='lambda e: e + 1')
         self.assertEquals([2, 3, 4, 5], m())
-        m = missionlib.Map()(m,
-                                  command='lambda e: e + 1')
+        m = missionlib.Map()(m, command='lambda e: e + 1')
         self.assertEquals([3, 4, 5, 6], m())
-        m = missionlib.Map()(m,
-                                  command='lambda e: e + 1')
+        m = missionlib.Map()(m, command='lambda e: e + 1')
         self.assertEquals([4, 5, 6, 7], m())
+
+class MissionCompositionInPipe(unittest.TestCase):
+
+    def test_acc_is_not_excepted_format(self):
+        rawdata = 'err'
+        m = self._run(rawdata)
+        self.assertEquals(missionlib.BadFormatMission, type(m))
+        self.assertEquals(rawdata, m.acc)
+
+    def test_acc_is_not_what_we_want(self):
+        rawdata = {}
+        m = self._run(pickle.dumps(rawdata))
+        self.assertEquals(missionlib.ValueErrorMission, type(m))
+
+        rawdata = {'class': str, 'acc': None, 'tasks':()}
+        m = self._run(pickle.dumps(rawdata))
+        self.assertEquals(missionlib.ValueErrorMission, type(m))
+
+    def _run(self, rawdata):
+        m = missionlib.Mission.loads(rawdata)
+        m = missionlib.Lines()(self._load(m.dump()))
+        m = missionlib.Map()(m, command='lambda e: e + 1')
+        return m
+
+    def _load(self, s):
+        return missionlib.Mission.loads(s)

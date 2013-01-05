@@ -94,10 +94,7 @@ def reconstruct_tasks(tasks):
 # ------------------------------------------------------------------------------
 # Classes
 # ------------------------------------------------------------------------------
-class Mission(object):
-
-    desc = None
-    epilog = None
+class BaseMissoin(object):
 
     def __init__(self, acc=None):
         self.acc = acc
@@ -111,6 +108,74 @@ class Mission(object):
     def prejob(self):
         "things need to do before executing mission tasks."
         pass
+
+    def dump(self):
+        """Serilized a Mission instance.
+
+        Returns: pickled dict object.
+        """
+        output = {}
+        # Because pickle can not serialize objects or
+        # functions which are too magic.
+        output['tasks'] = marshaled_tasks(self.tasks)
+        del(self.tasks)
+        output['mission'] = self
+        return pickle.dumps(output)
+
+    @classmethod
+    def loads(self, msg):
+        """create a Mission instance from a string.
+
+        Args:
+            msg (str): pickled Mission instance.
+
+        Returns:
+            Mission: Reconstruced by recieved data.
+            BadFormatMission: Recieved data can not unseralized.
+            ValueErrorMission: Mission can not be reconstruced.
+        """
+        try:
+            received = pickle.loads(msg)
+        except Exception as e:
+            return BadFormatMission(msg, e)
+
+        try:
+            obj = received['mission']
+            tasks = received['tasks']
+        except KeyError as e:
+            return ValueErrorMission(received, e)
+        else:
+            obj.tasks = reconstruct_tasks(tasks)
+            return obj
+        
+# ------------------------------------------------------------------------------
+# Exception Mission Classes
+# ------------------------------------------------------------------------------
+class ExceptionMission(BaseMissoin):
+
+    def __init__(self, acc, exception):
+        super(ExceptionMission, self).__init__(acc)
+        self.exception = exception
+
+class BadFormatMission(ExceptionMission):
+
+    def __call__(self, **opts):
+        return '\n'.join([
+            "Recievied a bad format mission.",
+            "-" * 10,
+            self.acc])
+
+class ValueErrorMission(ExceptionMission):
+
+    def __call__(self, **opts):
+        return '\n'.join([
+            "Recievied a bad format mission.",
+            "-" * 10,
+            self.acc])
+# ------------------------------------------------------------------------------
+# Gernal Mission Classes
+# ------------------------------------------------------------------------------
+class Mission(BaseMissoin):
 
     def __call__(self):
         """Run tasks
@@ -135,51 +200,6 @@ class Mission(object):
                     tsk_name, self.acc, tsk_value))
         return ret
 
-    def dump(self):
-        """Serilized a Mission instance.
-
-        Returns: pickled dict object.
-
-            for example:
-
-            {'class': class name
-             'acc': input result
-             'tasks': task chian
-             }
-        """
-        output = {'class': self.__class__.__name__}
-        output['acc'] = self.acc
-        output['tasks'] = marshaled_tasks(self.tasks)
-        return pickle.dumps(output)
-
-    @classmethod
-    def loads(self, msg):
-        """create a Mission instance from a string.
-
-        Args:
-            msg (str): pickled Mission instance.
-
-        Returns: Mission
-        Raises: BadMissionMessage
-        """
-        try:
-            received = pickle.loads(msg)
-        except:
-            logging.error(msg)
-            exit()
-
-        clsname = received['class']
-        if clsname == 'Mission':
-            cls = eval(clsname)
-            try:
-                mission = cls(received['acc'])
-                mission.tasks = reconstruct_tasks(received['tasks'])
-            except KeyError as e:
-                raise BadMissionMessage(e)
-            return mission
-        else:
-            raise BadMissionMessage("Recived invalide mission")
-
 class Readstdin(object):
 
     desc = """
@@ -199,7 +219,9 @@ class Readstdin(object):
 
     def __call__(self, acc):
         return acc
-
+# ------------------------------------------------------------------------------
+# Stream Mission Classes
+# ------------------------------------------------------------------------------
 class StreamMission(object):
 
     def process_stdin(self, fd):
