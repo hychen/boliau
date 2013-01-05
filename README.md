@@ -94,6 +94,29 @@ $ boliau-print < count_sourcelist_url.mission
 23
 ```
 
+## To operate more data types with plugins.
+
+### Examples
+
+To display Launchpad bug information.
+
+```
+$ boliau-lp-get bug 1 | boliau-lp-format buginfo | boliau-print Title: (LP:# 1) Microsoft has a majority market share
+Created: 2004-08-20 00:00:00+00:00
+Last updated: 2013-01-04 00:12:18.967847+00:00
+URL: https://bugs.launchpad.net/bugs/1
+```
+
+To statistic status of launchpad bugtasks of people ossug-hychen and print to
+console in yaml format.
+
+```
+$ boliau-lp-searchbugtasks people ossug-hychen > bugtasks.mission
+$ cat bugtasks.mission | boliau-lp-format today_bugtask_status | boliau-lp-format toyaml | boliau-print 
+{date: !!timestamp '2013-01-06 05:04:10.091141', fix-committed: 4, fix-released: 8,
+  in-progress: 2, todo: 4, wont-fix: 3}
+```
+
 ### Installation and usage
 
 ### Troubleshooting
