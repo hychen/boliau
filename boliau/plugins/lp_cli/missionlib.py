@@ -130,7 +130,6 @@ class Get(StartLaunchpadMission):
     def __call__(self, **opts):
         entry_type = opts.pop('entry_type')
         entry_id = opts.pop('entry_id')
-        opts = self.load_lp_objects(opts)
         self.acc.add_task(repr(self.__class__),
                           self.maintask,
                           entry_type, entry_id,

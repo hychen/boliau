@@ -80,4 +80,4 @@ def buginfo(bug, show_desc=False):
         tpl.append("Description:")
         tpl.append(bug.description)
 
-        return '\n'.join(tpl)
+    return '\n'.join(tpl)
