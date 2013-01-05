@@ -68,8 +68,12 @@ def marshaled_tasks(tasks):
     ret = []
     for tsk_name, tsk_value in tasks:
         (tsk, tsk_args, tsk_kwargs) = tsk_value
-        tsk_bytecode = marshal.dumps(tsk.func_code)
-        ret.append( (tsk_name, (tsk_bytecode,
+        # builtin function and method does not have bytecode.
+        if tsk.__module__ == '__builtin__':
+            ret.append((tsk_name, (tsk, {}, tsk_args, tsk_kwargs)))
+        else:
+            tsk_body = marshal.dumps(tsk.func_code)
+            ret.append( (tsk_name, (tsk_body,
                            tsk.func_defaults,
                            tsk_args,
                            tsk_kwargs) ) )
@@ -82,12 +86,15 @@ def reconstruct_tasks(tasks):
         tasks (tuple): A tuple of mission tasks. each task is a combination of
                        the function name, body, arguments.
 
-    Returns: same struct as input, but the bytecode filed is replaced to bytecode object.
+    Returns: same struct as input, but the bytecode field is replaced to bytecode object.
     """
     ret = []
     for tsk_name, tsk_value in tasks:
-        (tsk_bytecode, tsk_defaults, tsk_args, tsk_kwargs) = tsk_value
-        tsk = reconstruct_function(tsk_bytecode, tsk_defaults)
+        (tsk_body, tsk_defaults, tsk_args, tsk_kwargs) = tsk_value
+        if type(tsk_body) is str:
+            tsk = reconstruct_function(tsk_body, tsk_defaults)
+        else:
+            tsk = tsk_body
         ret.append( (tsk_name, (tsk, tsk_args, tsk_kwargs) ) )
     return ret
 

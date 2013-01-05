@@ -29,6 +29,28 @@ import pickle
 
 from boliau import missionlib
 
+class ReconstrucedFunc(unittest.TestCase):
+
+    def test_builtin(self):
+        self.check(sum, range(0, 5))
+        self.check(map, sum, [range(0, 5), range(0,5)])
+        self.check(len, range(0, 5))
+
+    def test_fn(self):
+        def f1(a, b, c, d = 3):
+            if d:
+                return a + d
+            else:
+                return a + b + c
+        self.check(f1, 1, 2, 3)
+        self.check(f1, 1, 2, 3, 4)
+
+    def check(self, f, *args, **kwargs):
+        marshaled = missionlib.marshaled_tasks([('t1', (f, args, kwargs))])
+        returned_f = missionlib.reconstruct_tasks(marshaled)[0][1][0]
+        self.assertTrue(callable(returned_f), returned_f)
+        self.assertEquals(f(*args, **kwargs), returned_f(*args, **kwargs))
+
 def _create_multitasks_mission(acc):
     fn1 = lambda acc : map(lambda x : x + 1, acc)
     fn2 = lambda acc : sum(acc)
