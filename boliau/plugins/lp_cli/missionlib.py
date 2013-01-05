@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*
-# 
+#
 # File: lp_cli.py
 #
 # Copyright (C) 2012  Hsin-Yi Chen (hychen)
@@ -77,8 +77,13 @@ class LaunchpadDatabase(object):
             return getattr(self.lp, entry_type)[entry_id]
         except KeyError as e:
             logging.debug(e)
-            return None        
-                    
+            return None
+
+    def load_lp_objects(self, collection):
+        if 'assignee' in collection:
+            collection['assignee'] = self.get('people', collection['assignee'])
+        return collection
+
 class StartLaunchpadMission(object):
 
     def __init__(self):
@@ -98,17 +103,18 @@ class SearchBugTasks(StartLaunchpadMission):
     def __call__(self, **opts):
         entry_type = opts.pop('entry_type')
         entry_id = opts.pop('entry_id')
-
         self.acc.add_task(repr(self.__class__),
                           self.maintask,
                           entry_type, entry_id,
                           **opts)
-
-        print self.acc.dump()
+        return self.acc
 
     @staticmethod
     def maintask(db, entry_type, entry_id, **opts):
         entry = db.get(entry_type, entry_id)
+        if entry_type == 'project' and 'milestone' in opts:
+             opts['milestone'] = entry.getMilestone(name=opts['milestone'])
+        opts = db.load_lp_objects(opts)
         return entry.searchTasks(**opts)
 
 class Get(StartLaunchpadMission):
@@ -116,20 +122,20 @@ class Get(StartLaunchpadMission):
     desc = """
     Get a Launchpad Entry.
     """
-    
+
     epilog = """
     Type: None -> LaunchpadEntry
     """
-    
+
     def __call__(self, **opts):
         entry_type = opts.pop('entry_type')
         entry_id = opts.pop('entry_id')
+        opts = self.load_lp_objects(opts)
         self.acc.add_task(repr(self.__class__),
                           self.maintask,
                           entry_type, entry_id,
                           **opts)
-        
-        print self.acc.dump()
-        
+        return self.acc
+
     def maintask(db, entry_type, entry_id, **opts):
         return db.get(entry_type, entry_id)

@@ -24,6 +24,8 @@
 # LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
 # FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 # DEALINGS IN THE SOFTWARE.
+import sys
+
 from boliau import cmdlib
 from boliau import missionlib as core_missionlib
 from boliau.plugins.lp_cli import missionlib
@@ -53,7 +55,7 @@ def do_get():
     cmd.add_argument('entry_id',
                      help='sepcify entry id that search bugs in')
     args = cmd.parse_argv()
-    return cmd.call(args)
+    print cmd.call(args).dump()
 
 def do_searchbugtasks():
     cmd = cmdlib.as_command(missionlib.SearchBugTasks())
@@ -83,4 +85,4 @@ def do_searchbugtasks():
     cmd.add_argument('--milestone', dest='milestone', help='milestone name')
     cmd.add_argument('--modified-since')
     args = cmd.parse_argv()
-    return cmd.call(args)
+    print cmd.call(args).dump()
