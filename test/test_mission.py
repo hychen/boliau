@@ -117,15 +117,15 @@ class MissionCompositionInPipe(unittest.TestCase):
 
     def test_acc_is_not_what_we_want(self):
         rawdata = {}
-        m = self._run(pickle.dumps(rawdata))
-        self.assertEquals(missionlib.ValueErrorMission, type(m))
+        m = self._run(rawdata)
+        self.assertEquals(missionlib.NullMission, type(m))
 
-        rawdata = {'class': str, 'acc': None, 'tasks':()}
-        m = self._run(pickle.dumps(rawdata))
-        self.assertEquals(missionlib.ValueErrorMission, type(m))
+        rawdata = {'mission': str, 'acc': None, 'tasks':()}
+        m = self._run(rawdata)
+        self.assertEquals(missionlib.NullMission, type(m), m.exception)
 
     def _run(self, rawdata):
-        m = missionlib.Mission.loads(rawdata)
+        m = self._load(pickle.dumps(rawdata))
         m = missionlib.Lines()(self._load(m.dump()))
         m = missionlib.Map()(m, command='lambda e: e + 1')
         return m

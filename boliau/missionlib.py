@@ -118,7 +118,7 @@ class BaseMissoin(object):
         # Because pickle can not serialize objects or
         # functions which are too magic.
         output['tasks'] = marshaled_tasks(self.tasks)
-        del(self.tasks)
+        self.tasks = []
         output['mission'] = self
         return pickle.dumps(output)
 
@@ -132,21 +132,33 @@ class BaseMissoin(object):
         Returns:
             Mission: Reconstruced by recieved data.
             BadFormatMission: Recieved data can not unseralized.
-            ValueErrorMission: Mission can not be reconstruced.
+            NullMission: Mission can not be reconstruced.
         """
+        # unserialized the data.
         try:
             received = pickle.loads(msg)
         except Exception as e:
             return BadFormatMission(msg, e)
-
+        else:
+            if type(received) is not dict:
+                return BadFormatMission(received,
+                                    TypeError("unpickled data is not a dict."))
+        # reconstruct the mission.
         try:
             obj = received['mission']
             tasks = received['tasks']
         except KeyError as e:
-            return ValueErrorMission(received, e)
-        else:
+            return NullMission(received, e)
+
+        if type(obj) not in (Mission,
+                             BadFormatMission,
+                             NullMission):
+            return NullMission(received,
+                                     TypeError("Unpickled data does not have a mission."))
+        # reconstruced functions.
+        if tasks:
             obj.tasks = reconstruct_tasks(tasks)
-            return obj
+        return obj
 
 # ------------------------------------------------------------------------------
 # Exception Mission Classes
@@ -160,18 +172,17 @@ class ExceptionMission(BaseMissoin):
 class BadFormatMission(ExceptionMission):
 
     def __call__(self, **opts):
-        return '\n'.join([
-            "Recievied a bad format mission.",
-            "-" * 10,
-            self.exception.message])
+        """Return what we get"""
+        return self.acc
 
-class ValueErrorMission(ExceptionMission):
+class NullMission(ExceptionMission):
 
     def __call__(self, **opts):
         return '\n'.join([
             "Recievied a bad format mission.",
             "-" * 10,
             self.exception.message])
+
 # ------------------------------------------------------------------------------
 # Gernal Mission Classes
 # ------------------------------------------------------------------------------
