@@ -180,7 +180,21 @@ class Mission(object):
         else:
             raise BadMissionMessage("Recived invalide mission")
 
+class Readstdin(object):
 
+    desc = """
+    Pack stream from STDIN  to Mission.
+    """
+
+    epilog = """
+    Type: Any -> Any
+    """
+    def process_stdin(self, fd):
+        return Mission(fd.read())
+
+    def __call__(self, acc):
+        return acc
+        
 class StreamMission(object):
 
     def process_stdin(self, fd):
@@ -196,19 +210,6 @@ class StreamMission(object):
             return Mission.loads(content)
         except BadMissionMessage as e:
             logging.error(e)
-
-class Readstdin(StreamMission):
-
-    desc = """
-    Pack stream from STDIN  to Mission.
-    """
-
-    epilog = """
-    Type: Any -> Any
-    """
-
-    def __call__(self, acc):
-        print acc.dump()
 
 class ExecMission(StreamMission):
 
