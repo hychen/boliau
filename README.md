@@ -1,6 +1,6 @@
-[![Build Status](NOTE: Use something like Travis CI http://about.travis-ci.org/docs/user/getting-started/)
+# 無聊 (boliau) 
 
-# Project 無聊 (boliau)
+[![Build Status](https://secure.travis-ci.org/hychen/boliau.png)](http://travis-ci.org/hychen/boliau)
 
 Tools to deal with boring things every day.
 
