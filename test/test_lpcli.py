@@ -52,11 +52,3 @@ class FormaterTestCase(unittest.TestCase):
                            'fix-committed': 2,
                            'fix-released': 3},
                            res)
-
-def suite():
-    suite = unittest.TestSuite()
-    suite.addTest(unittest.makeSuite(FormaterTestCase, 'test'))
-    return suite
-
-if __name__ == '__main__':
-    unittest.main(defaultTest='suite')

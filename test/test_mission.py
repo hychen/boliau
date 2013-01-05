@@ -106,12 +106,3 @@ class StreameMissionTestCase(unittest.TestCase):
         m = missionlib.Map()(m,
                                   command='lambda e: e + 1')
         self.assertEquals([4, 5, 6, 7], m())
-
-def suite():
-    suite = unittest.TestSuite()
-    suite.addTest(unittest.makeSuite(MissionTestCase, 'test'))
-    suite.addTest(unittest.makeSuite(StreameMissionTestCase, 'test'))
-    return suite
-
-if __name__ == '__main__':
-    unittest.main(defaultTest='suite')

@@ -74,13 +74,3 @@ class HandleKwargsTestCase(unittest.TestCase):
                             'key3': 3},
                             ('key', 'key2'))
         self.assertEquals({'key3': 3}, res)
-
-def suite():
-    suite = unittest.TestSuite()
-    suite.addTest(unittest.makeSuite(GetObjAttrvalTestCase, 'test'))
-    suite.addTest(unittest.makeSuite(ImportModFnTestCase, 'test'))
-    suite.addTest(unittest.makeSuite(HandleKwargsTestCase, 'test'))
-    return suite
-
-if __name__ == '__main__':
-    unittest.main(defaultTest='suite')

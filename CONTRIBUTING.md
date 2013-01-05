@@ -8,7 +8,7 @@ This section includes advice on how to build new features for the project & what
   pull request.
 * You should include the following tests:
   * Write test case of your code in test/ before you start coding.
-  * Pass tests by running test/test_all.py before commit or send pull request.
+  * Pass tests by running nosetest before commit or send pull request.
 * These are the updates we hope you make to the changelog: file name,
   summary of changes.
 

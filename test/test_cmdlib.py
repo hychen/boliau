@@ -75,13 +75,3 @@ class ExecuteCommandTestCase(unittest.TestCase):
                             [(['num'], {'nargs': '+'})])
         newcmd.argv = ['1', '2', '3']
         self.assertEquals(6, newcmd.call(newcmd.parse_argv()))
-
-
-def suite():
-    suite = unittest.TestSuite()
-    suite.addTest(unittest.makeSuite(RegisterArgumentsTestCase, 'test'))
-    suite.addTest(unittest.makeSuite(ExecuteCommandTestCase, 'test'))
-    return suite
-
-if __name__ == '__main__':
-    unittest.main(defaultTest='suite')
