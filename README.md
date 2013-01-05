@@ -114,6 +114,6 @@ Feel free to chat with the boliau core team (and many other users) on IRC in the
 
 ### Copyright
 
-Copyright © 2013 Chen Hsin-YI. See [LICENSE](https://github.com/nesquena/rabl/blob/master/LICENSE.md) for details.
+Copyright © 2013 Chen Hsin-YI. See [LICENSE](https://github.com/hychen/boliau/blob/master/LICENSE.md) for details.
 
 Project is a member of the [OSS Manifesto](http://ossmanifesto.org).
