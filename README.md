@@ -101,7 +101,8 @@ $ boliau-print < count_sourcelist_url.mission
 To display Launchpad bug information.
 
 ```
-$ boliau-lp-get bug 1 | boliau-lp-format buginfo | boliau-print Title: (LP:# 1) Microsoft has a majority market share
+$ boliau-lp-get bug 1 | boliau-lp-format buginfo | boliau-print 
+Title: (LP:# 1) Microsoft has a majority market share
 Created: 2004-08-20 00:00:00+00:00
 Last updated: 2013-01-04 00:12:18.967847+00:00
 URL: https://bugs.launchpad.net/bugs/1
