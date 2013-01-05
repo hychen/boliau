@@ -1,7 +1,7 @@
 #!/usr/bin/env python
-# -*- coding: utf-8 -*
+# -*- encoding=utf8 -*-
 #
-# File: test_lpcli.py
+# File: __init__.py
 #
 # Copyright (C) 2012  Hsin-Yi Chen (hychen)
 
@@ -24,39 +24,3 @@
 # LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
 # FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 # DEALINGS IN THE SOFTWARE.
-import unittest
-import mock
-
-from boliau.plugins.lp_cli import formater
-
-class FormaterTestCase(unittest.TestCase):
-
-    def _mk_obj(self, **kwargs):
-        obj = mock.MagicMock()
-        for k,v in kwargs.items():
-            setattr(obj, k, v)
-        return obj
-
-    def test_today_bugtaskstatus(self):
-        data = [self._mk_obj(status='Fix Committed'),
-                self._mk_obj(status='Fix Committed'),
-                self._mk_obj(status='Fix Released'),
-                self._mk_obj(status='Fix Released'),
-                self._mk_obj(status='Fix Released')]
-        res = formater.today_bugtask_status(data)
-        self.assertEquals(dict, type(res))
-        res.pop('date')
-        self.assertEquals({'todo': 0,
-                           'in-progress': 0,
-                           'wont-fix': 0,
-                           'fix-committed': 2,
-                           'fix-released': 3},
-                           res)
-
-def suite():
-    suite = unittest.TestSuite()
-    suite.addTest(unittest.makeSuite(FormaterTestCase, 'test'))
-    return suite
-
-if __name__ == '__main__':
-    unittest.main(defaultTest='suite')
