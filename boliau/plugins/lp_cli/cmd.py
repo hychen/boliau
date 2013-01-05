@@ -83,6 +83,6 @@ def do_searchbugtasks():
     cmd.add_argument('--search-text', dest='search_text',
                      help='search text')
     cmd.add_argument('--milestone', dest='milestone', help='milestone name')
-    cmd.add_argument('--modified-since')
+    cmd.add_argument('--modified-since', type=cmdlib.datetype)
     args = cmd.parse_argv()
     print cmd.call(args).dump()

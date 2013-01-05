@@ -28,9 +28,22 @@ import types
 import argparse
 import logging
 import sys
+import datetime
 
 from boliau import util
 
+# -------------------------------------------------
+# Argparse Option Type
+# -------------------------------------------------
+def datetimetype(datestring):
+    return datetime.datetime.strptime(datestring, '%Y-%m-%d %H:%M')
+
+def datetype(datestring):
+    return datetime.datetime.strptime(datestring, '%Y-%m-%d')
+
+# -------------------------------------------------
+# Classes
+# -------------------------------------------------
 class Command(object):
 
     """Command
