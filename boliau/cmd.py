@@ -46,6 +46,7 @@ def do_pycall():
 
 def do_lines():
     cmd = cmdlib.as_command(missionlib.Lines(), require_stdin=True)
+    args = cmd.parse_argv()
     print cmd.call(stdin=sys.stdin).dump()
 
 def do_concat():
