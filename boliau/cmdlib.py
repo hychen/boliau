@@ -95,7 +95,7 @@ class Command(object):
             if self.require_stdin and len(self.argsparser._actions) == 1:
                 return None
             else:
-                self.argsparser.print_help()
+                self.argsparser.parse_args(self.argv)
 
     def register_arguments(self, parser_config):
         """Register Argument Configs

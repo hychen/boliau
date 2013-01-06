@@ -46,8 +46,9 @@ def do_pycall():
 
 def do_lines():
     cmd = cmdlib.as_command(missionlib.Lines(), require_stdin=True)
+    cmd.add_argument('--sep')
     args = cmd.parse_argv()
-    print cmd.call(stdin=sys.stdin).dump()
+    print cmd.call(args, stdin=sys.stdin).dump()
 
 def do_concat():
     cmd = cmdlib.as_command(missionlib.Concat(), require_stdin=True)
