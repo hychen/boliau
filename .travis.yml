@@ -2,8 +2,8 @@ language: python
 python:
   - "2.7"
 install:
-  - apt-get install python-ucltip
-  - apt-get install python-launchpadlib
+  - sudo apt-get install python-ucltip
+  - sudo apt-get install python-launchpadlib
 script: 
   - source setdevenv 
   - nosetests 
