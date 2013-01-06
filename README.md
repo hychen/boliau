@@ -121,6 +121,20 @@ $ cat bugtasks.mission | boliau-lp-format today_bugtask_status | boliau-lp-forma
   in-progress: 2, todo: 4, wont-fix: 3}
 ```
 
+To store the collected data to mongodb.
+
+```
+$ cat bugtasks.mission | boliau-lp-format today_bugtask_status | boliau-mongo-insert testdb test
+50e95ae8f101ad1bb2000000
+```
+
+Get collected data from mongodb and convert to json format.
+
+```
+boliau-mongo-find testdb test  | boliau-pycall list | boliau-lp-format tojson | boliau-print 
+[{"wont-fix": 3, "fix-committed": 4, "in-progress": 2, "fix-released": 8, "date": "2013-01-06T19:07:20.704000", "_id": null, "todo": 4}]
+```
+
 ### Installation and usage
 
 Dependency
