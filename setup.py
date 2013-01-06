@@ -28,8 +28,8 @@ import glob
 from distutils.core import setup
 
 setup(
-    name = 'ucltip',
-    version = '0.1',
+    name = 'boliau',
+    version = '0.0',
     author = 'Hsin-Yi Chen 陳信屹 (hychen)',
     author_email = 'ossug.hychen@gmail.com',
     url='http://github.com/hychen/boliau',
