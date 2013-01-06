@@ -3,13 +3,16 @@
 [![Build Status](https://secure.travis-ci.org/hychen/boliau.png)](http://travis-ci.org/hychen/boliau)
 
 The project name BoLiau comes from the spelling pronunciation of 無聊
-in 台灣閩南語.
+in 台灣閩南語, because the author Chen Hsin-Yi developed when he was
+trying to eliminate tedious repetition actions.
+
+Those actions are classifier to two kind: Task and Mission.
 
 Each task is a step of steps to archive a mission such as 
 collecting data from website to generate a report, batch changing bug
 status in Bug Tracker, etc.
 
-A mission is composed by many tasks in sequence like a production line
+And, a  mission is composed by many tasks in sequence like a production line
 in a factory.
 
 ## Composition
@@ -27,7 +30,7 @@ $ cat /etc/apt/source.list | boliau-readstdin | boliau-print | wc -l
 60
 ```
 
-## Python!
+## Python
 
 When data is redirected to `boliau-readstdin`. it will be converted as 
 a Python String Object (str).
@@ -70,7 +73,7 @@ In previous introduction, only boliau-print is third type command. the
 others are used to define how many tasks need to be executed to
 archive a mission.
 
-### Some examples.
+### Examples
 
 To create a mission to split source list content to list
 
@@ -82,14 +85,14 @@ $ awk '{print $2}' /etc/apt/sources.list | grep http | \
 To print the url count.
 
 ```
-$ cat get_sourcelist_url.missison | boliau-pycal len | boliau-print
+$ cat get_sourcelist_url.missison | boliau-pycall len | boliau-print
 23
 ```
 
 To create a new mission to less typing.
 
 ```
-$ cat get_sourcelist_url.mission | boliau-pycal len > count_sourcelist_url.mission
+$ cat get_sourcelist_url.mission | boliau-pycall len > count_sourcelist_url.mission
 $ boliau-print < count_sourcelist_url.mission
 23
 ```
@@ -120,17 +123,41 @@ $ cat bugtasks.mission | boliau-lp-format today_bugtask_status | boliau-lp-forma
 
 ### Installation and usage
 
+Dependency
+- nosetest
+- mock
+- launchpadlib
+
 ### Troubleshooting
 
 ### Development
+
+1. Fork the git repository [here](https://github.com/hychen/boliau/fork_select).
+2. Hacking...
+3. Make sure all changes pass unittest.
+4. Send pull request.
+
+```
+$ source setdevenv
+$ nosetest
+```
 
 To see what has changed in recent versions of boliau, see the [CHANGELOG](https://github.com/hychen/boliau/blob/master/CHANGELOG.md).
 
 ### Core Team Members
 
-- Chen, Hsin-YI (hychen)
+- Chen, Hsin-Yi (hychen)
 
 ### Resources
+
+The project is inspired by many ideas in functional programming. 
+
+- [Lambda Function](http://en.wikipedia.org/wiki/Anonymous_function)
+- [Closure](http://en.wikipedia.org/wiki/Closure_(computer_science))
+- [Function Composition](http://en.wikipedia.org/wiki/Function_composition_(computer_science))
+- [Partial Function application](http://en.wikipedia.org/wiki/Partial_function)
+- [Haskell Arrow](http://www.haskell.org/arrows/)
+- A part of Haskell Type System.
 
 ### Other questions
 
