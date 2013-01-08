@@ -79,10 +79,10 @@ class LaunchpadDatabase(object):
             logging.debug(e)
             return None
 
-    def load_lp_objects(self, collection):
-        if 'assignee' in collection:
-            collection['assignee'] = self.get('people', collection['assignee'])
-        return collection
+    def load_lp_objects(self, opts):
+        if opts.get('assignee'):
+            opts['assignee'] = self.get('people', opts['assignee'])
+        return opts
 
 class StartLaunchpadMission(object):
 
@@ -112,7 +112,7 @@ class SearchBugTasks(StartLaunchpadMission):
     @staticmethod
     def maintask(db, entry_type, entry_id, **opts):
         entry = db.get(entry_type, entry_id)
-        if entry_type == 'project' and 'milestone' in opts:
+        if entry and entry_type == 'project' and opts.get('milestone'):
              opts['milestone'] = entry.getMilestone(name=opts['milestone'])
         opts = db.load_lp_objects(opts)
         return entry.searchTasks(**opts)
