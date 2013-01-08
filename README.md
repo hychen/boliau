@@ -169,9 +169,6 @@ The project is inspired by many ideas in functional programming.
 - [Lambda Function](http://en.wikipedia.org/wiki/Anonymous_function)
 - [Closure](http://en.wikipedia.org/wiki/Closure_(computer_science))
 - [Function Composition](http://en.wikipedia.org/wiki/Function_composition_(computer_science))
-- [Partial Function application](http://en.wikipedia.org/wiki/Partial_function)
-- [Haskell Arrow](http://www.haskell.org/arrows/)
-- A part of Haskell Type System.
 
 ### Other questions
 
