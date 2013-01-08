@@ -38,7 +38,9 @@ class MongoDatabase(object):
 
     def get(self, dbname, collectionname):
         self.connect()
-        return self.conn[dbname][collectionname]
+        db = self.conn[dbname]
+        collection = db[collectionname]
+        return collection
 
 class StartMongoMission(object):
 
@@ -87,5 +89,8 @@ class Insert(MongoStreamMissoin):
         dbname = opts['db']
         collection_name = opts['collection']
         self.client.connect()
-        collection = self.client[dbname][collection_name]
-        return collection.insert(acc())
+        collection = self.client.get(dbname, collection_name)
+        data = acc()
+        if data:
+            return collection.insert(acc())
+        return "Can not insert. data is None."
