@@ -138,3 +138,25 @@ class Get(StartLaunchpadMission):
 
     def maintask(db, entry_type, entry_id, **opts):
         return db.get(entry_type, entry_id)
+
+class FindPackages(StartLaunchpadMission):
+
+    desc = ''
+
+    epilog =''
+
+    def __call__(self, **opts):
+        ppa = opts.pop('ppa').replace('ppa:', '')
+        ppa_owner, ppa_name = ppa.split('/')
+        self.acc.add_task(repr(self.__class__),
+                          self.maintask,
+                          ppa_owner, ppa_name,
+                          **opts)
+        return self.acc
+
+    def maintask(db, ppa_onwer, ppa_name, **opts):
+        people = db.get('people', ppa_onwer)
+        if not people:
+            people = db.get('team', ppa_onwer)
+        archive = people.getPPAByName(name=ppa_name)
+        return archive.getPublishedSources(status='Published')

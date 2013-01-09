@@ -86,3 +86,9 @@ def do_searchbugtasks():
     cmd.add_argument('--modified-since', type=cmdlib.datetype)
     args = cmd.parse_argv()
     print cmd.call(args).dump()
+
+def do_findpackages():
+    cmd = cmdlib.as_command(missionlib.FindPackages())
+    cmd.add_argument('ppa', help="ppa name (e.x: ossug-hychen/ppa")
+    args = cmd.parse_argv()
+    print cmd.call(args).dump()
