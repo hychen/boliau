@@ -59,10 +59,10 @@ class Find(_StartAction):
     desc = """Querying for More Than One Document
     """
 
-    epilog = """
-    Type: None -> pymongo.cursor.Cursor
-    """
-
+    link_type = 'None -> Mission'
+    
+    data_type = 'Any -> Any'
+    
     def __call__(self, **opts):
         dbname = opts.pop('db')
         collectionname = opts.pop('collection')
@@ -81,9 +81,9 @@ class Insert(_StreamAction):
 
     desc = """Insert a doucment to Mongo DB. """
 
-    epilog = """
-    Type: dict -> None
-    """
+    link_type = 'Mission -> None'
+    
+    data_type = 'Any -> Any'
 
     def __call__(self, acc, **opts):
         dbname = opts['db']

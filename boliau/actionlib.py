@@ -224,9 +224,10 @@ class Readstdin(object):
     Pack stream from STDIN  to Mission.
     """
 
-    epilog = """
-    Type: Any -> Any
-    """
+    link_type = 'Any -> Mission'
+
+    data_type = 'Any -> Any'
+
     def process_stdin(self, fd):
         try:
             try:
@@ -267,9 +268,9 @@ class Exec(StreamAction):
     Execute tasks of recieved mission.
     """
 
-    epilog = """
-    Type: None -> Any
-    """
+    link_type = 'Mission -> None'
+
+    data_type = 'None -> Any'
 
     def __call__(self, acc):
         return acc()
@@ -280,14 +281,14 @@ class Show(StreamAction):
     Print recieved result.
     """
 
-    epilog = """
-    Type: Any -> String
-    """
+    link_type = 'Mission -> None'
+
+    data_type = 'Any -> Any'
 
     def __call__(self, acc):
         return unicode(acc())
 
-class PyEvalAction(StreamAction):
+class _PyEvalAction(StreamAction):
 
     def add_task_by_command(self, tsk, command):
         name = self.__class__.__name__.lower()
@@ -306,27 +307,29 @@ class PyEvalAction(StreamAction):
 
         return self.received_mission
 
-class Lines(PyEvalAction):
+class Lines(_PyEvalAction):
 
     desc = """
     Return a list of the results of spliting the string
     """
-    epilog = """
-    Type: String -> List String
-    """
+
+    link_type = 'Mission -> Mission'
+
+    data_type = 'Any -> Any'
 
     @staticmethod
     def maintask(acc, sep='\n'):
         return acc.strip().split(sep)
 
-class Concat(PyEvalAction):
+class Concat(_PyEvalAction):
 
     desc = """
     combining element to string
     """
-    epilog = """
-    Type: List String -> String
-    """
+
+    link_type = 'Mission -> Mission'
+
+    data_type = 'Any -> Any'
 
     @staticmethod
     def maintask(acc, sep='\n'):
@@ -338,7 +341,7 @@ def eval_if_need(s):
     else:
         return s
 
-class Filter(PyEvalAction):
+class Filter(_PyEvalAction):
 
     desc = """
     Return those items of sequence for which function(item) is true.  If
@@ -346,24 +349,24 @@ class Filter(PyEvalAction):
     or string, return the same type, else return a list.
     """
 
-    epilog = """
-    Type: Iterator Any -> Iterator Any
-    """
+    link_type = 'Mission -> Mission'
+    
+    data_type = 'Any -> Any'
 
     @staticmethod
     def maintask(acc, command):
         return filter(eval_if_need(command), acc)
 
-class Map(PyEvalAction):
+class Map(_PyEvalAction):
 
     desc = """
     Return a list of the results of applying the function to the items of
     the argument sequence(s)
     """
 
-    epilog = """
-    Type: Iterator Any -> Iterator Any
-    """
+    link_type = 'Mission -> Mission'
+    
+    data_type = 'Any -> Any'
 
     @staticmethod
     def maintask(acc, command):
@@ -375,9 +378,9 @@ class PyCall(StreamAction):
     Call Python function
     """
 
-    epilog = """
-    Type: Any -> Any
-    """
+    link_type = 'Mission -> Mission'
+    
+    data_type = 'Any -> Any'
 
     def __call__(self, acc, **opts):
         query = opts.pop('func')

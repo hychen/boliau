@@ -96,9 +96,9 @@ class SearchBugTasks(_StartAction):
     Search Bug Tasks of the entry.
     """
 
-    epilog = """
-    Type: None -> Iterator LaunchpadEntry
-    """
+    link_type = 'None -> Mission'
+
+    data_type = 'Any -> Any'
 
     def __call__(self, **opts):
         entry_type = opts.pop('entry_type')
@@ -123,9 +123,9 @@ class Get(_StartAction):
     Get a Launchpad Entry.
     """
 
-    epilog = """
-    Type: None -> LaunchpadEntry
-    """
+    link_type = 'None -> Mission'
+    
+    data_type = 'Any -> Any'
 
     def __call__(self, **opts):
         entry_type = opts.pop('entry_type')
@@ -141,9 +141,11 @@ class Get(_StartAction):
 
 class FindPackages(_StartAction):
 
-    desc = ''
+    desc = 'Find packages'
 
-    epilog =''
+    link_type = 'None -> Mission'
+    
+    data_type = 'Any -> Any'
 
     def __call__(self, **opts):
         ppa = opts.pop('ppa').replace('ppa:', '')

@@ -175,7 +175,8 @@ def as_command(action, opt_conf=None, require_stdin=False):
     if type(action) is types.FunctionType:
         cmd = Command(require_stdin)
     else:
-        cmd = Command(action.desc, action.epilog, require_stdin)
+        epilog = "link :: {0}, data :: {1}".format(action.link_type, action.data_type)
+        cmd = Command(action.desc, epilog, require_stdin)
     if opt_conf:
         cmd.register_arguments(opt_conf)
     cmd.action = action
