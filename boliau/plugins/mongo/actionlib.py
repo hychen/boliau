@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- encoding=utf8 -*-
 #
-# File: missionlib.py
+# File: actionlib.py
 #
 # Copyright (C) 2013  Hsin-Yi Chen (hychen)
 
@@ -26,7 +26,7 @@
 # DEALINGS IN THE SOFTWARE.
 import pymongo
 
-from boliau import missionlib
+from boliau import actionlib
 
 class MongoDatabase(object):
 
@@ -42,19 +42,19 @@ class MongoDatabase(object):
         collection = db[collectionname]
         return collection
 
-class StartMongoMission(object):
+class _StartAction(object):
 
     def __init__(self):
         self.client = MongoDatabase()
-        self.acc = missionlib.Mission(self.client)
+        self.acc = actionlib.Mission(self.client)
 
-class MongoStreamMissoin(missionlib.StreamMission):
+class _StreamAction(actionlib.StreamAction):
 
     def __init__(self):
         self.client = MongoDatabase()
-        super(MongoStreamMissoin, self).__init__()
+        super(_StreamAction, self).__init__()
 
-class Find(StartMongoMission):
+class Find(_StartAction):
 
     desc = """Querying for More Than One Document
     """
@@ -77,7 +77,7 @@ class Find(StartMongoMission):
         collection = client.get(dbname, collectionname)
         return collection.find(opts)
 
-class Insert(MongoStreamMissoin):
+class Insert(_StreamAction):
 
     desc = """Insert a doucment to Mongo DB. """
 

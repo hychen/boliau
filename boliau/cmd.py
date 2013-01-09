@@ -27,43 +27,43 @@
 import sys
 
 from boliau import cmdlib
-from boliau import missionlib
+from boliau import actionlib
 
 def do_print():
-    cmd = cmdlib.as_command(missionlib.Show(), require_stdin=True)
+    cmd = cmdlib.as_command(actionlib.Show(), require_stdin=True)
     print cmd.call(stdin=sys.stdin)
 
 def do_readstdin():
-    cmd = cmdlib.as_command(missionlib.Readstdin(), require_stdin=True)
+    cmd = cmdlib.as_command(actionlib.Readstdin(), require_stdin=True)
     cmd.parse_argv()
     print cmd.call(stdin=sys.stdin).dump()
 
 def do_pycall():
-    cmd = cmdlib.as_command(missionlib.PyCall(), require_stdin=True)
+    cmd = cmdlib.as_command(actionlib.PyCall(), require_stdin=True)
     cmd.add_argument('func', help="function name e.x json.dump")
     args = cmd.parse_argv()
     print cmd.call(args, stdin=sys.stdin).dump()
 
 def do_lines():
-    cmd = cmdlib.as_command(missionlib.Lines(), require_stdin=True)
+    cmd = cmdlib.as_command(actionlib.Lines(), require_stdin=True)
     cmd.add_argument('--sep')
     args = cmd.parse_argv()
     print cmd.call(args, stdin=sys.stdin).dump()
 
 def do_concat():
-    cmd = cmdlib.as_command(missionlib.Concat(), require_stdin=True)
+    cmd = cmdlib.as_command(actionlib.Concat(), require_stdin=True)
     cmd.add_argument('--sep')
     args = cmd.parse_argv()
     print cmd.call(args, stdin=sys.stdin).dump()
 
 def do_filter():
-    cmd = cmdlib.as_command(missionlib.Filter(), require_stdin=True)
+    cmd = cmdlib.as_command(actionlib.Filter(), require_stdin=True)
     cmd.add_argument('--command')
     args = cmd.parse_argv()
     print cmd.call(args, stdin=sys.stdin).dump()
 
 def do_map():
-    cmd = cmdlib.as_command(missionlib.Map(), require_stdin=True)
+    cmd = cmdlib.as_command(actionlib.Map(), require_stdin=True)
     cmd.add_argument('--command')
     args = cmd.parse_argv()
     print cmd.call(args, stdin=sys.stdin).dump()

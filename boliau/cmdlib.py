@@ -66,7 +66,7 @@ class Command(object):
         self.logger = logging.getLogger('command')
 
         self._argv = sys.argv[1:]
-        self._mission = None
+        self._action = None
 
     @property
     def argv(self):
@@ -78,13 +78,13 @@ class Command(object):
         self._argv = argv
 
     @property
-    def mission(self):
-        return self._mission
-    @mission.setter
-    def mission(self, mission):
-        if not callable(mission):
-            raise TypeError("Mission must be a callable object.")
-        self._mission = mission
+    def action(self):
+        return self._action
+    @action.setter
+    def action(self, action):
+        if not callable(action):
+            raise TypeError("Action must be a callable object.")
+        self._action = action
 
     def parse_argv(self):
         """parse arguments.
@@ -136,10 +136,10 @@ class Command(object):
             args: command arguments (list)
             stdin: File-like object
 
-        Return: output of self.mission.
+        Return: output of self.action
         """
-        if not self.mission:
-            raise ValueError("Mission of Command is not set.")
+        if not self.action:
+            raise ValueError("No Action!")
 
         if args:
             kwargs = self.transform_args(args)
@@ -148,7 +148,7 @@ class Command(object):
 
         if self.require_stdin:
             if stdin:
-                acc = self.mission.process_stdin(stdin)
+                acc = self.action.process_stdin(stdin)
             else:
                 return False
         else:
@@ -156,27 +156,27 @@ class Command(object):
 
         try:
             if acc:
-                return self.mission(acc, **kwargs)
+                return self.action(acc, **kwargs)
             else:
-                return self.mission(**kwargs)
+                return self.action(**kwargs)
         except KeyboardInterrupt:
             return False
 
-def as_command(mission, opt_conf=None, require_stdin=False):
+def as_command(action, opt_conf=None, require_stdin=False):
     """Create a Command
 
     Args:
-        mission: a callable object
+        action: a callable object
         opt_conf: command arguments config
         require_stdin: True fi the command requires output of STDIN
 
     Return: Command
     """
-    if type(mission) is types.FunctionType:
+    if type(action) is types.FunctionType:
         cmd = Command(require_stdin)
     else:
-        cmd = Command(mission.desc, mission.epilog, require_stdin)
+        cmd = Command(action.desc, action.epilog, require_stdin)
     if opt_conf:
         cmd.register_arguments(opt_conf)
-    cmd.mission = mission
+    cmd.action = action
     return cmd

@@ -27,8 +27,8 @@
 import sys
 
 from boliau import cmdlib
-from boliau import missionlib as core_missionlib
-from boliau.plugins.lp_cli import missionlib
+from boliau import actionlib as core_actionlib
+from boliau.plugins.lp_cli import actionlib
 
 def do_format():
     def _get_formaternamees(modname):
@@ -39,7 +39,7 @@ def do_format():
     _formatname_help = "format name avaliable: ({0})".format(
         ', '.join(_get_formaternamees('boliau.plugins.lp_cli.formater')))
 
-    cmd = cmdlib.as_command(core_missionlib.PyCall(), require_stdin=True)
+    cmd = cmdlib.as_command(core_actionlib.PyCall(), require_stdin=True)
     cmd.add_argument('formatname', help=_formatname_help)
     args = cmd.parse_argv()
     args.func = 'boliau.plugins.lp_cli.formater.' + args.formatname
@@ -48,7 +48,7 @@ def do_format():
     print cmd.call(args, stdin=sys.stdin).dump()
 
 def do_get():
-    cmd = cmdlib.as_command(missionlib.Get())
+    cmd = cmdlib.as_command(actionlib.Get())
     cmd.add_argument('entry_type',
                      choices=('bug', ),
                      help='sepecify entry type that search bugs in')
@@ -58,7 +58,7 @@ def do_get():
     print cmd.call(args).dump()
 
 def do_searchbugtasks():
-    cmd = cmdlib.as_command(missionlib.SearchBugTasks())
+    cmd = cmdlib.as_command(actionlib.SearchBugTasks())
     cmd.add_argument('entry_type',
                      choices=('people','project'),
                      help='sepecify entry type that search bugs in')
@@ -70,11 +70,11 @@ def do_searchbugtasks():
                      help='Search for any or all of the tags specified.',
                      choices=('Any', 'All'), default='Any')
     cmd.add_argument('--status', dest='status',
-                     choices=missionlib.LP_VALIDATE_BUGTASK_STATUS,
+                     choices=actionlib.LP_VALIDATE_BUGTASK_STATUS,
                      action='append',
                      help='sepecify bugtask status')
     cmd.add_argument('--importance',
-                     choices=missionlib.LP_VALIDATE_BUGTASK_IMPORTANCE,
+                     choices=actionlib.LP_VALIDATE_BUGTASK_IMPORTANCE,
                      action='append',
                      dest='importance',
                      help='sepecify bugtask importance')
@@ -88,7 +88,7 @@ def do_searchbugtasks():
     print cmd.call(args).dump()
 
 def do_findpackages():
-    cmd = cmdlib.as_command(missionlib.FindPackages())
+    cmd = cmdlib.as_command(actionlib.FindPackages())
     cmd.add_argument('ppa', help="ppa name (e.x: ossug-hychen/ppa")
     args = cmd.parse_argv()
     print cmd.call(args).dump()

@@ -58,16 +58,16 @@ class ExecuteCommandTestCase(unittest.TestCase):
     def setUp(self):
         self.cmd = cmdlib.Command()
 
-    def test_exception_no_mission(self):
+    def test_no_action(self):
         self.assertRaises(ValueError, self.cmd.call)
 
-    def test_exception_mission_has_wrong_type(self):
-        self.assertRaises(TypeError, self.cmd.mission, None)
+    def test_action_has_wrong_type(self):
+        self.assertRaises(TypeError, self.cmd.action, None)
 
     def test_sum(self):
         self.cmd.register_arguments([(['num'], {'nargs': '+'})])
         self.cmd.argv = ['1', '2', '3']
-        self.cmd.mission = lambda num : sum(map(int, num))
+        self.cmd.action = lambda num : sum(map(int, num))
         self.assertEquals(6, self.cmd.call(self.cmd.parse_argv()))
 
     def test_as_command(self):

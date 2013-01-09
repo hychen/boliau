@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*
 #
-# File: missionlib.py
+# File: actionlib.py
 #
 # Copyright (C) 2012  Hsin-Yi Chen (hychen)
 
@@ -241,9 +241,9 @@ class Readstdin(object):
     def __call__(self, acc):
         return acc
 # ------------------------------------------------------------------------------
-# Stream Mission Classes
+# Stream Action Classes
 # ------------------------------------------------------------------------------
-class StreamMission(object):
+class StreamAction(object):
 
     def process_stdin(self, fd):
         """Create a Mission from a string is read from fd.
@@ -261,7 +261,7 @@ class StreamMission(object):
         else:
             return Mission.loads(content)
 
-class ExecMission(StreamMission):
+class Exec(StreamAction):
 
     desc = """
     Execute tasks of recieved mission.
@@ -274,7 +274,7 @@ class ExecMission(StreamMission):
     def __call__(self, acc):
         return acc()
 
-class Show(StreamMission):
+class Show(StreamAction):
 
     desc = """
     Print recieved result.
@@ -287,7 +287,7 @@ class Show(StreamMission):
     def __call__(self, acc):
         return unicode(acc())
 
-class ModifyMission(StreamMission):
+class PyEvalAction(StreamAction):
 
     def add_task_by_command(self, tsk, command):
         name = self.__class__.__name__.lower()
@@ -306,7 +306,7 @@ class ModifyMission(StreamMission):
 
         return self.received_mission
 
-class Lines(ModifyMission):
+class Lines(PyEvalAction):
 
     desc = """
     Return a list of the results of spliting the string
@@ -319,7 +319,7 @@ class Lines(ModifyMission):
     def maintask(acc, sep='\n'):
         return acc.strip().split(sep)
 
-class Concat(ModifyMission):
+class Concat(PyEvalAction):
 
     desc = """
     combining element to string
@@ -338,7 +338,7 @@ def eval_if_need(s):
     else:
         return s
 
-class Filter(ModifyMission):
+class Filter(PyEvalAction):
 
     desc = """
     Return those items of sequence for which function(item) is true.  If
@@ -354,7 +354,7 @@ class Filter(ModifyMission):
     def maintask(acc, command):
         return filter(eval_if_need(command), acc)
 
-class Map(ModifyMission):
+class Map(PyEvalAction):
 
     desc = """
     Return a list of the results of applying the function to the items of
@@ -369,7 +369,7 @@ class Map(ModifyMission):
     def maintask(acc, command):
         return map(eval_if_need(command), acc)
 
-class PyCall(StreamMission):
+class PyCall(StreamAction):
 
     desc = """
     Call Python function

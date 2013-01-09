@@ -27,7 +27,7 @@
 import unittest
 import ucltip
 
-from boliau import missionlib
+from boliau import actionlib
 
 ucltip.regcmds('echo',
                'boliau-readstdin',
@@ -52,7 +52,7 @@ class CmdTestCase(unittest.TestCase):
 
     def read(self, run=True):
         self.pipe.wait()
-        m = missionlib.Mission.loads(self.pipe.stdout.read())
+        m = actionlib.Mission.loads(self.pipe.stdout.read())
         if run:
             return m()
         else:

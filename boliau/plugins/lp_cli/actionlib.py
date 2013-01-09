@@ -27,7 +27,7 @@
 import os
 import logging
 
-from boliau import missionlib
+from boliau import actionlib
 from launchpadlib.launchpad import Launchpad
 
 # -----------------------------------------------------------------------
@@ -84,13 +84,13 @@ class LaunchpadDatabase(object):
             opts['assignee'] = self.get('people', opts['assignee'])
         return opts
 
-class StartLaunchpadMission(object):
+class _StartAction(object):
 
     def __init__(self):
         self.db = LaunchpadDatabase()
-        self.acc = missionlib.Mission(self.db)
+        self.acc = actionlib.Mission(self.db)
 
-class SearchBugTasks(StartLaunchpadMission):
+class SearchBugTasks(_StartAction):
 
     desc = """
     Search Bug Tasks of the entry.
@@ -117,7 +117,7 @@ class SearchBugTasks(StartLaunchpadMission):
         opts = db.load_lp_objects(opts)
         return entry.searchTasks(**opts)
 
-class Get(StartLaunchpadMission):
+class Get(_StartAction):
 
     desc = """
     Get a Launchpad Entry.
@@ -139,7 +139,7 @@ class Get(StartLaunchpadMission):
     def maintask(db, entry_type, entry_id, **opts):
         return db.get(entry_type, entry_id)
 
-class FindPackages(StartLaunchpadMission):
+class FindPackages(_StartAction):
 
     desc = ''
 

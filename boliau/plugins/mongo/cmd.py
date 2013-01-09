@@ -27,17 +27,17 @@
 import sys
 
 from boliau import cmdlib
-from boliau.plugins.mongo import missionlib
+from boliau.plugins.mongo import actionlib
 
 def do_find():
-    cmd = cmdlib.as_command(missionlib.Find())
+    cmd = cmdlib.as_command(actionlib.Find())
     cmd.add_argument('db', help="database name.")
     cmd.add_argument('collection', help="collection name.")
     args = cmd.parse_argv()
     print cmd.call(args).dump()
     
 def do_insert():
-    cmd = cmdlib.as_command(missionlib.Insert(),
+    cmd = cmdlib.as_command(actionlib.Insert(),
                             require_stdin=True)
     cmd.add_argument('db', help="database name.")
     cmd.add_argument('collection', help="collection name.")
