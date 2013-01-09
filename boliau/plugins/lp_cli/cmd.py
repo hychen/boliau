@@ -57,8 +57,8 @@ def do_get():
     args = cmd.parse_argv()
     print cmd.call(args).dump()
 
-def do_searchbugtasks():
-    cmd = cmdlib.as_command(actionlib.SearchBugTasks())
+def do_findbugtasks():
+    cmd = cmdlib.as_command(actionlib.FindBugTasks())
     cmd.add_argument('entry_type',
                      choices=('people','project'),
                      help='sepecify entry type that search bugs in')

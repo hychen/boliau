@@ -90,7 +90,32 @@ class _StartAction(object):
         self.db = LaunchpadDatabase()
         self.acc = actionlib.Mission(self.db)
 
-class SearchBugTasks(_StartAction):
+# -----------------------------------------------------------------------
+# Action Classes
+# -----------------------------------------------------------------------
+class Get(_StartAction):
+
+    desc = """
+    Get a Launchpad Entry.
+    """
+
+    link_type = 'None -> Mission'
+
+    data_type = 'Any -> Any'
+
+    def __call__(self, **opts):
+        entry_type = opts.pop('entry_type')
+        entry_id = opts.pop('entry_id')
+        self.acc.add_task(repr(self.__class__),
+                          self.maintask,
+                          entry_type, entry_id,
+                          **opts)
+        return self.acc
+
+    def maintask(db, entry_type, entry_id, **opts):
+        return db.get(entry_type, entry_id)
+        
+class FindBugTasks(_StartAction):
 
     desc = """
     Search Bug Tasks of the entry.
@@ -117,27 +142,6 @@ class SearchBugTasks(_StartAction):
         opts = db.load_lp_objects(opts)
         return entry.searchTasks(**opts)
 
-class Get(_StartAction):
-
-    desc = """
-    Get a Launchpad Entry.
-    """
-
-    link_type = 'None -> Mission'
-    
-    data_type = 'Any -> Any'
-
-    def __call__(self, **opts):
-        entry_type = opts.pop('entry_type')
-        entry_id = opts.pop('entry_id')
-        self.acc.add_task(repr(self.__class__),
-                          self.maintask,
-                          entry_type, entry_id,
-                          **opts)
-        return self.acc
-
-    def maintask(db, entry_type, entry_id, **opts):
-        return db.get(entry_type, entry_id)
 
 class FindPackages(_StartAction):
 
