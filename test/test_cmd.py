@@ -29,6 +29,8 @@ import ucltip
 
 from boliau import actionlib
 
+import test
+
 ucltip.regcmds('echo',
                'boliau-readstdin',
                'boliau-lines',
@@ -37,28 +39,7 @@ ucltip.regcmds('echo',
                'boliau-filter',
                'boliau-pycall')
 
-class CmdTestCase(unittest.TestCase):
-
-    def setUp(self):
-        self.reset()
-
-    def reset(self):
-        self.pipe = ucltip.Pipe()
-
-    def set(self, acc):
-        self.acc = acc
-        self.pipe.add(echo, '-n', self.acc)
-        self.pipe.add(boliau_readstdin)
-
-    def read(self, run=True):
-        self.pipe.wait()
-        m = actionlib.Mission.loads(self.pipe.stdout.read())
-        if run:
-            return m()
-        else:
-            return m
-
-class SequenceTestCase(CmdTestCase):
+class SequenceTestCase(test.CmdTestCase):
 
     def test_lines_without_sep(self):
         acc = 'a\nb\nc'
@@ -92,7 +73,7 @@ class SequenceTestCase(CmdTestCase):
         self.pipe.add(boliau_lines, sep=',')
         self.pipe.add(boliau_filter, command="lambda e: e == 'b'")
         self.assertEquals(['b'], self.read())
-        
+
     def test_pycall(self):
         acc = 'abcdefg'
         self.set(acc)
