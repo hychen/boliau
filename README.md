@@ -115,7 +115,7 @@ To statistic status of launchpad bugtasks of people ossug-hychen and print to
 console in yaml format.
 
 ```
-$ boliau-lp-searchbugtasks people ossug-hychen > bugtasks.mission
+$ boliau-lp-findbugtasks people ossug-hychen > bugtasks.mission
 $ cat bugtasks.mission | boliau-lp-format today_bugtask_status | boliau-lp-format toyaml | boliau-print 
 {date: !!timestamp '2013-01-06 05:04:10.091141', fix-committed: 4, fix-released: 8,
   in-progress: 2, todo: 4, wont-fix: 3}
@@ -141,8 +141,50 @@ Dependency
 - nosetest
 - mock
 - launchpadlib
+- ucltip
 
-### Troubleshooting
+### Ideas pool
+
+#### Core
+- A commad to display or execute last mission. called boliau-it
+
+```
+$ boliau-lp-findpackages ppa:ossug-hychen/ppa | boliau-print
+$ boliau-it --show
+boliau-lp-findpackages ppa:ossug-hychen/ppa | boliau-print
+```
+
+- A command to create a Python object from json string. 
+
+```
+$ boliau-pyobj {'a':1} | boliau-mongo-insert testdb test
+```
+- simple ui for data selection
+
+```
+boliau-lp-findpackages ppa:ossug-hychen/ppa | boliau-ui-selection --onlyone | boliau-print
+```
+
+- Type check
+
+```
+$ boliau-lp-findpackages ppa:ossug-hychen/ppa | boliau-pycall list | boliau-concat | boliau-typecheck
+link: None -> Mission -> Mission -> None
+data: None -> PublishedSourcePackage -> list -> str 
+```
+- Computation Composition
+same as b(a()) + c(a())
+
+```
+$ boliau-arr-split a.mission | boliau-arr-unsplit b.mission c.mission | boliau-print
+```
+
+#### Google gdata Plugin
+- A command to insert a row to google spread sheet.
+
+```
+$ boliau-lp-findpackages ppa:ossug-hychen/ppa | boliau-gspreadsheet-insert $key wworksheet --username babablabl
+```
 
 ### Development
 
