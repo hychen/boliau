@@ -143,6 +143,32 @@ Dependency
 - launchpadlib
 - ucltip
 
+### Development
+
+1. Fork the git repository [here](https://github.com/hychen/boliau/fork_select).
+2. Hacking...
+3. Make sure all changes pass unittest.
+4. Send pull request.
+
+```
+$ source setdevenv
+$ nosetest
+```
+
+To see what has changed in recent versions of boliau, see the [CHANGELOG](https://github.com/hychen/boliau/blob/master/CHANGELOG.md).
+
+### Core Team Members
+
+- Chen, Hsin-Yi (hychen)
+
+### Resources
+
+The project is inspired by many ideas in functional programming. 
+
+- [Lambda Function](http://en.wikipedia.org/wiki/Anonymous_function)
+- [Closure](http://en.wikipedia.org/wiki/Closure_(computer_science))
+- [Function Composition](http://en.wikipedia.org/wiki/Function_composition_(computer_science))
+
 ### Ideas pool
 
 #### Core
@@ -179,38 +205,11 @@ same as b(a()) + c(a())
 $ boliau-arr-split a.mission | boliau-arr-unsplit b.mission c.mission | boliau-print
 ```
 
-#### Google gdata Plugin
 - A command to insert a row to google spread sheet.
 
 ```
 $ boliau-lp-findpackages ppa:ossug-hychen/ppa | boliau-gspreadsheet-insert $key wworksheet --username babablabl
 ```
-
-### Development
-
-1. Fork the git repository [here](https://github.com/hychen/boliau/fork_select).
-2. Hacking...
-3. Make sure all changes pass unittest.
-4. Send pull request.
-
-```
-$ source setdevenv
-$ nosetest
-```
-
-To see what has changed in recent versions of boliau, see the [CHANGELOG](https://github.com/hychen/boliau/blob/master/CHANGELOG.md).
-
-### Core Team Members
-
-- Chen, Hsin-Yi (hychen)
-
-### Resources
-
-The project is inspired by many ideas in functional programming. 
-
-- [Lambda Function](http://en.wikipedia.org/wiki/Anonymous_function)
-- [Closure](http://en.wikipedia.org/wiki/Closure_(computer_science))
-- [Function Composition](http://en.wikipedia.org/wiki/Function_composition_(computer_science))
 
 ### Other questions
 
