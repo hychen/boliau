@@ -81,3 +81,10 @@ def buginfo(bug, show_desc=False):
         tpl.append(bug.description)
 
     return '\n'.join(tpl)
+
+def list(data, entry_type='bugtasks'):
+    _milestone = lambda e: e and e.date_targeted or ''
+    if entry_type == 'bugtasks':
+        data = map(lambda e: u"{0}, {1}, {2}, {3}".format(
+            e.title, e.status, e.importance, _milestone(e.milestone)), data)
+    return '\n'.join(data)
