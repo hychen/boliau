@@ -70,11 +70,11 @@ def do_findbugtasks():
                      help='Search for any or all of the tags specified.',
                      choices=('Any', 'All'), default='Any')
     cmd.add_argument('--status', dest='status',
-                     choices=actionlib.LP_VALIDATE_BUGTASK_STATUS,
+                     choices=actionlib.LP_VALIDATE_BUGTASK_STATUS.keys(),
                      action='append',
                      help='sepecify bugtask status')
     cmd.add_argument('--importance',
-                     choices=actionlib.LP_VALIDATE_BUGTASK_IMPORTANCE,
+                     choices=actionlib.LP_VALIDATE_BUGTASK_IMPORTANCE.keys(),
                      action='append',
                      dest='importance',
                      help='sepecify bugtask importance')

@@ -33,23 +33,23 @@ from launchpadlib.launchpad import Launchpad
 # -----------------------------------------------------------------------
 # Global Variables
 # -----------------------------------------------------------------------
-LP_VALIDATE_BUGTASK_STATUS=("New",
-                            "Incomplete (with response)",
-                            "Incomplete (without response)",
-                            "Incomplete",
-                            "Invalid",
-                            "Won't Fix",
-                            "Confirmed",
-                            "Triaged",
-                            "In Progress",
-                            "Fix Committed",
-                            "Fix Released" )
+LP_VALIDATE_BUGTASK_STATUS={"New": 10,
+                            "Confirmed": 9,
+                            "Triaged": 8,
+                            "In Progress": 99,
+                            "Incomplete (with response)": 6,
+                            "Incomplete (without response)": 5,
+                            "Incomplete": 4,
+                            "Fix Committed": 3,
+                            "Fix Released": 2,
+                            "Won't Fix": 1,                            
+                            "Invalid":0}
 
-LP_VALIDATE_BUGTASK_IMPORTANCE=(
-    'Critical',
-    'High',
-    'Medium',
-    'Low')
+LP_VALIDATE_BUGTASK_IMPORTANCE={
+    'Critical':3,
+    'High':2,
+    'Medium':1,
+    'Low':0}
 
 LP_VALIDATE_BRANCH_STATUS=(
     'Experimental',
@@ -114,7 +114,7 @@ class Get(_StartAction):
 
     def maintask(db, entry_type, entry_id, **opts):
         return db.get(entry_type, entry_id)
-        
+
 class FindBugTasks(_StartAction):
 
     desc = """
@@ -148,7 +148,7 @@ class FindPackages(_StartAction):
     desc = 'Find packages'
 
     link_type = 'None -> Mission'
-    
+
     data_type = 'Any -> Any'
 
     def __call__(self, **opts):
