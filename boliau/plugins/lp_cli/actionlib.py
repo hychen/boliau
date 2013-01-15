@@ -33,23 +33,27 @@ from launchpadlib.launchpad import Launchpad
 # -----------------------------------------------------------------------
 # Global Variables
 # -----------------------------------------------------------------------
-LP_VALIDATE_BUGTASK_STATUS={"New": 10,
-                            "Confirmed": 9,
-                            "Triaged": 8,
-                            "In Progress": 99,
-                            "Incomplete (with response)": 6,
-                            "Incomplete (without response)": 5,
-                            "Incomplete": 4,
-                            "Fix Committed": 3,
-                            "Fix Released": 2,
-                            "Won't Fix": 1,                            
-                            "Invalid":0}
+LP_VALIDATE_BUGTASK_STATUS={
+                            'In Progress': 100,
+                            'Triaged': 90,
+                            'Confirmed': 80,
+                            'New': 70,
+                            'Incomplete (with response)': 60,
+                            'Incomplete (without response)': 50,
+                            'Incomplete': 40,
+                            'Fix Committed': 30,
+                            'Fix Released': 20,
+                            'Won\'t Fix': 10,
+                            'Invalid': 0,
+                            'Opinion': 0}
 
 LP_VALIDATE_BUGTASK_IMPORTANCE={
-    'Critical':3,
-    'High':2,
-    'Medium':1,
-    'Low':0}
+    'Critical': 5,
+    'High': 4,
+    'Medium': 3,
+    'Low': 2,
+    'Wishlist': 1,
+    'Undecided': 0}
 
 LP_VALIDATE_BRANCH_STATUS=(
     'Experimental',
@@ -61,6 +65,8 @@ LP_VALIDATE_BRANCH_STATUS=(
 class LaunchpadDatabase(object):
 
     lp = None
+    LP_VALIDATE_BUGTASK_STATUS = LP_VALIDATE_BUGTASK_STATUS
+    LP_VALIDATE_BUGTASK_IMPORTANCE = LP_VALIDATE_BUGTASK_IMPORTANCE
 
     def connect(self):
         if not self.lp:
@@ -134,11 +140,23 @@ class FindBugTasks(_StartAction):
                           **opts)
         return self.acc
 
-    @staticmethod
     def maintask(db, entry_type, entry_id, **opts):
         entry = db.get(entry_type, entry_id)
+        # handling milestone.
         if entry and entry_type == 'project' and opts.get('milestone'):
-             opts['milestone'] = entry.getMilestone(name=opts['milestone'])
+            opts['milestone'] = entry.getMilestone(name=opts['milestone'])
+        # handling status.
+        if 'All' in opts['status'] and 'All' in opts['status']:
+           raise Exception("Todo and All are confilict.")
+        if 'All' in opts['status']:
+            opts['status'] = db.LP_VALIDATE_BUGTASK_STATUS.keys()
+        elif 'Todo' in opts['status']:
+            opts['status'] = filter(lambda e: e not in ('Invalid',
+                                                        'Won\'t Fix',
+                                                        'Fix Committed',
+                                                        'Fix Release'),
+                                    db.LP_VALIDATE_BUGTASK_STATUS.keys())
+
         opts = db.load_lp_objects(opts)
         return entry.searchTasks(**opts)
 

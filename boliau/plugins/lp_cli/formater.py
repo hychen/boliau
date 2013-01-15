@@ -82,13 +82,23 @@ def buginfo(bug, show_desc=False):
 
     return '\n'.join(tpl)
 
-def list(data, entry_type='bugtasks'):
+def sorted_importance(data):
     from boliau.plugins.lp_cli import actionlib
-    _key = lambda e: actionlib.LP_VALIDATE_BUGTASK_STATUS[e.status] + \
-                     actionlib.LP_VALIDATE_BUGTASK_IMPORTANCE[e.importance] 
+    _key = lambda e: actionlib.LP_VALIDATE_BUGTASK_STATUS.get(e.status, -99) + \
+      actionlib.LP_VALIDATE_BUGTASK_IMPORTANCE.get(e.importance, -99)
     data = sorted(data, key=_key, reverse=True)
+    return data
+
+def list(data, entry_type='bugtasks'):
     _milestone = lambda e: e and e.date_targeted or ''
     if entry_type == 'bugtasks':
-        data = map(lambda e: u"{0}, {1}, {2}, {3} (http://pad.lv/{4})".format(
-            e.title, e.status, e.importance, _milestone(e.milestone), e.bug.id), data)
+        data = map(
+            lambda e: u"{0:<14s} {1:<18s} {2:8s} {3:8d} {4:35s} {5} (http://pad.lv/{6})".format(
+            e.status,
+            e.target.name,
+            e.importance,
+            e.bug.id,
+            e.bug.title,
+            _milestone(e.milestone),
+            e.bug.id), data)
     return '\n'.join(data)
