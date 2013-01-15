@@ -93,12 +93,10 @@ def list(data, entry_type='bugtasks'):
     _milestone = lambda e: e and e.date_targeted or ''
     if entry_type == 'bugtasks':
         data = map(
-            lambda e: u"{0:<14s} {1:<18s} {2:8s} {3:8d} {4:35s} {5} (http://pad.lv/{6})".format(
+            lambda e: u"{:<14s} {:8s} {:35s} {} (http://pad.lv/{})".format(
             e.status,
-            e.target.name,
             e.importance,
-            e.bug.id,
-            e.bug.title,
+            e.title,
             _milestone(e.milestone),
             e.bug.id), data)
     return '\n'.join(data)

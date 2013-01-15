@@ -154,7 +154,8 @@ class FindBugTasks(_StartAction):
             opts['status'] = filter(lambda e: e not in ('Invalid',
                                                         'Won\'t Fix',
                                                         'Fix Committed',
-                                                        'Fix Release'),
+                                                        'Fix Released',
+                                                        'Opinion',),
                                     db.LP_VALIDATE_BUGTASK_STATUS.keys())
 
         opts = db.load_lp_objects(opts)
