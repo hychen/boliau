@@ -170,6 +170,7 @@ Dependency
 - mock
 - launchpadlib
 - ucltip
+- mako
 
 ### Development
 
