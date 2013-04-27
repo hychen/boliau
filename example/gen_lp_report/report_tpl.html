@@ -1,0 +1,23 @@
+<%
+bts = btsdata
+%>
+<html>
+<body>
+<h1>${title}</h1>
+
+<h2> Bug Tasks. </h2>
+
+<ul>
+${mkli(bts[0])}
+${mkli(bts[1])}
+</ul>
+
+<%def name="mkli(bts)">
+% for bt in bts:
+	<li># ${bt.bug.id}, ${bt.bug.title}, ${bt.status}, ${bt.importance} </li>
+% endfor
+</%def>
+
+</body>
+</html>
+
