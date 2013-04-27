@@ -1,5 +1,6 @@
 <%
-bts = btsdata
+bts = btsdata[0]
+btsstatus = btsdata[1]
 %>
 <html>
 <body>
@@ -12,9 +13,12 @@ ${mkli(bts[0])}
 ${mkli(bts[1])}
 </ul>
 
+<h2> Bug Today Status </h2>
+TODO: ${btsstatus[0]['todo'] + btsstatus[1]['todo']}
+
 <%def name="mkli(bts)">
 % for bt in bts:
-	<li># ${bt.bug.id}, ${bt.bug.title}, ${bt.status}, ${bt.importance} </li>
+	<li>${bt.title}, ${bt.status}, ${bt.importance} </li>
 % endfor
 </%def>
 
