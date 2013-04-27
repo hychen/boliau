@@ -24,7 +24,7 @@
 # LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
 # FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 # DEALINGS IN THE SOFTWARE.
-from string import Template
+from mako.template import Template
 from boliau import actionlib
 
 def var_conflict(name, append_opt):
@@ -46,23 +46,20 @@ class Sub(object):
         output = opts['output']
         variables = {} 
 
-        for name, value in opts['var']:
-            if var_conflict(name, opts['mvar']):
-                print "A mvar and a var are conflict:{0}".format(name)
-                exit()
-            variables[name] = value
+        if opts['var']:
+            for name, value in opts['var']:
+                if opts['mvar'] and var_conflict(name, opts['mvar']):
+                    print "A mvar and a var are conflict:{0}".format(name)
+                    exit()
+                variables[name] = value
 
-        for name, fname in opts['mvar']:
-            m = actionlib.load_mission(fname)
-            variables[name] = m()
+        if opts['mvar']:
+            for name, fname in opts['mvar']:
+                m = actionlib.load_mission(fname)
+                variables[name] = m()
 
         with open(tplpath) as f:
-            tpl = Template(f.read())
-            try:
-                result = tpl.substitute(**variables)
-            except KeyError as e:
-                print "Err: missing assignment: {0}".format(e.message)
-                exit()
+            result = Template(f.read()).render(**variables)
 
         if opts['output']:
             with open(opts['output'], 'w') as fw:
