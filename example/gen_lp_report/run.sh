@@ -4,7 +4,8 @@
 boliau-lp-findbugtasks project laika > m1
 # find all bugtasks of bzr project which status is in progress.
 boliau-lp-findbugtasks project bzr --status 'In Progress' > m2
-# put outputs of m1 and m2 to a list.
+# put outputs of m1 and m2 to a list as the input of prepare_data.py
+# the output of prepare_data.py is a 2-tuple (outputs of m1 and m2, today bugtasks status of m1 and m2)
 boliau-arr-combine m1 m2 | ./prepare_data.py > m3
 # use mako template to create a html.
 # -- mvar option means to assign the result provied from a mission which should be a Python object and and used in mako directly.
