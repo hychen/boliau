@@ -67,3 +67,9 @@ def do_map():
     cmd.add_argument('--command')
     args = cmd.parse_argv()
     print cmd.call(args, stdin=sys.stdin).dump()
+
+def do_arr_combine():
+    cmd = cmdlib.as_command(actionlib.ArrCombine())
+    cmd.add_argument('missions', nargs='*')
+    args = cmd.parse_argv()
+    print cmd.call(args).dump()

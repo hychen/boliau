@@ -6,7 +6,7 @@ The project name BoLiau comes from the spelling pronunciation of 無聊
 in 台灣閩南語, because the author Chen Hsin-Yi developed when he was
 trying to eliminate tedious repetition actions.
 
-Those actions are classifier to two kind: Task and Mission.
+Those actions has two kind: Task and Mission.
 
 Each task is a step of steps to archive a mission such as 
 collecting data from website to generate a report, batch changing bug
@@ -97,6 +97,34 @@ $ boliau-print < count_sourcelist_url.mission
 23
 ```
 
+## Arrow, Arrow, Arrow ~~~
+
+Do you miss Haskell Arrow? :) 
+
+Let's define two missions of re-format Launchpad bug 1 and 2.
+
+```
+$ echo 123456 | boliau-readstdin  > m1
+$ echo 789100 | boliau-readstdin  > m2
+```
+
+boliau-arr-combine outputs a list contains the outputs of missions.
+
+```
+$ boliau-arr-combine m1 m2 | boliau-print 
+['123456\n', '789100\n']
+```
+
+The result of `boliau-arr-combine` can do a computation again.
+
+```
+$ boliau-arr-combine m1 m2 | boliau-concat | boliau-print 
+123456
+
+789100
+
+```
+
 ## To operate more data types with plugins.
 
 ### Examples
@@ -168,6 +196,7 @@ The project is inspired by many ideas in functional programming.
 - [Lambda Function](http://en.wikipedia.org/wiki/Anonymous_function)
 - [Closure](http://en.wikipedia.org/wiki/Closure_(computer_science))
 - [Function Composition](http://en.wikipedia.org/wiki/Function_composition_(computer_science))
+- [Haskell/Understanding arrows](http://en.wikibooks.org/wiki/Haskell/Understanding_arrows#.2A.2A.2A)
 
 ### Ideas pool
 

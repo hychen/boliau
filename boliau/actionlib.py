@@ -390,3 +390,23 @@ class PyCall(StreamAction):
             raise BadMissionMessage("PyCall: {0}".format(e))
         acc.add_task(query, fn, **opts)
         return acc
+
+def load_mission(fname):
+    with open(fname) as f:
+        return Mission.loads(f.read())
+
+def arr_combine(acc, missions):
+    return map(lambda m : m(), map(load_mission, missions))
+
+class ArrCombine(object):
+
+    desc = "Combine output of Missions"
+
+    link_type = "None -> Mission"
+
+    data_type = "None -> List Any"
+
+    def __call__(self, **opts):
+        acc = Mission()
+        acc.add_task('arr-combine', arr_combine, **opts)
+        return acc

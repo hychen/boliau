@@ -26,6 +26,7 @@
 # DEALINGS IN THE SOFTWARE.
 import unittest
 import pickle
+import os
 
 from boliau import actionlib
 
@@ -154,3 +155,29 @@ class MissionCompositionInPipe(unittest.TestCase):
 
     def _load(self, s):
         return actionlib.Mission.loads(s)
+import tempfile
+
+class ArrCombineTestCase(unittest.TestCase):
+
+    def setUp(self):
+        self.fname1 = tempfile.mkstemp()[1]
+        self.fname2 = tempfile.mkstemp()[1]
+
+        self.m1 = actionlib.Mission([1,2,3])
+        self.m2 = actionlib.Mission([4, 5, 6])
+        
+        self._write(self.m1, self.fname1)
+        self._write(self.m2, self.fname2)
+
+    def _write(self, m, fname):
+        with open(fname, 'w') as f:
+            f.write(m.dump())
+
+    def tearDown(self):
+        os.unlink(self.fname1)
+        os.unlink(self.fname2)
+
+    def test_combine(self):
+        arr = actionlib.ArrCombine()
+        result_m = arr(missions=[self.fname1, self.fname2])
+        self.assertEquals(result_m(), [self.m1(), self.m2()])
