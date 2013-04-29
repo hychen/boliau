@@ -235,6 +235,12 @@ same as b(a()) + c(a())
 $ boliau-arr-split a.mission | boliau-arr-unsplit b.mission c.mission | boliau-print
 ```
 
+```
+$ boliau-lp-findbugtasks project ubuntu > m1
+$ boliau-py-obj "['audio', 'bluetooth']" > m2
+$ boliau-arr-each m1 --mkwarg tag m2
+```
+
 - A command to insert a row to google spread sheet.
 
 ```
