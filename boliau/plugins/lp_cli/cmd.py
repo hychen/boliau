@@ -30,6 +30,13 @@ from boliau import cmdlib
 from boliau import actionlib as core_actionlib
 from boliau.plugins.lp_cli import actionlib
 
+def do_init():
+    def f():
+        lp =  actionlib.LaunchpadDatabase()
+        lp.connect()
+    cmd =  cmdlib.as_command(f)
+    print cmd.call(cmd.parse_argv())
+
 def do_format():
     def _get_formaternamees(modname):
         m = __import__(modname, fromlist=[modname])
