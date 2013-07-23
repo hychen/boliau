@@ -146,7 +146,7 @@ class FindBugTasks(_StartAction):
         if entry and entry_type == 'project' and opts.get('milestone'):
             opts['milestone'] = entry.getMilestone(name=opts['milestone'])
         # handling status.
-        if 'All' in opts['status'] and 'All' in opts['status']:
+        if 'Todo' in opts['status'] and 'All' in opts['status']:
            raise Exception("Todo and All are confilict.")
         if 'All' in opts['status']:
             opts['status'] = db.LP_VALIDATE_BUGTASK_STATUS.keys()
