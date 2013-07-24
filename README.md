@@ -142,6 +142,12 @@ boliau-mongo-find testdb test  | boliau-py-call list | boliau-lp-format tojson |
 [{"wont-fix": 3, "fix-committed": 4, "in-progress": 2, "fix-released": 8, "date": "2013-01-06T19:07:20.704000", "_id": null, "todo": 4}]
 ```
 
+Update google spread sheet data.
+
+```
+$ boliau-py-obj --from-string '[[1,2,3],[4,5,8]]' | boliau-gspread-upsert hychentestdb --email some@email.com --worksheet sheet1
+```
+
 ### Installation and usage
 
 Dependency
@@ -149,6 +155,7 @@ Dependency
 - mock
 - launchpadlib
 - ucltip
+- gspread
 
 ### Development
 
@@ -205,12 +212,6 @@ same as b(a()) + c(a())
 
 ```
 $ boliau-arr-split a.mission | boliau-arr-unsplit b.mission c.mission | boliau-print
-```
-
-- A command to insert a row to google spread sheet.
-
-```
-$ boliau-lp-findpackages ppa:ossug-hychen/ppa | boliau-gspreadsheet-insert $key wworksheet --username babablabl
 ```
 
 ### Other questions
