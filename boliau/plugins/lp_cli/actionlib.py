@@ -146,18 +146,17 @@ class FindBugTasks(_StartAction):
         if entry and entry_type == 'project' and opts.get('milestone'):
             opts['milestone'] = entry.getMilestone(name=opts['milestone'])
         # handling status.
-        if opts['status']:
-            if 'All' in opts['status'] and 'All' in opts['status']:
-               raise Exception("Todo and All are confilict.")
-            if 'All' in opts['status']:
-                opts['status'] = db.LP_VALIDATE_BUGTASK_STATUS.keys()
-            elif 'Todo' in opts['status']:
-                opts['status'] = filter(lambda e: e not in ('Invalid',
-                                                            'Won\'t Fix',
-                                                            'Fix Committed',
-                                                            'Fix Released',
-                                                            'Opinion',),
-                                        db.LP_VALIDATE_BUGTASK_STATUS.keys())
+        if 'Todo' in opts['status'] and 'All' in opts['status']:
+           raise Exception("Todo and All are confilict.")
+        if 'All' in opts['status']:
+            opts['status'] = db.LP_VALIDATE_BUGTASK_STATUS.keys()
+        elif 'Todo' in opts['status']:
+            opts['status'] = filter(lambda e: e not in ('Invalid',
+                                                        'Won\'t Fix',
+                                                        'Fix Committed',
+                                                        'Fix Released',
+                                                        'Opinion',),
+                                    db.LP_VALIDATE_BUGTASK_STATUS.keys())
 
         opts = db.load_lp_objects(opts)
         return entry.searchTasks(**opts)

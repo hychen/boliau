@@ -372,25 +372,6 @@ class Map(_PyEvalAction):
     def maintask(acc, command):
         return map(eval_if_need(command), acc)
 
-class PyCall(StreamAction):
-
-    desc = """
-    Call Python function
-    """
-
-    link_type = 'Mission -> Mission'
-    
-    data_type = 'Any -> Any'
-
-    def __call__(self, acc, **opts):
-        query = opts.pop('func')
-        try:
-            fn = util.import_mod_fn(query)
-        except Exception as e:
-            raise BadMissionMessage("PyCall: {0}".format(e))
-        acc.add_task(query, fn, **opts)
-        return acc
-
 def load_mission(fname):
     with open(fname) as f:
         return Mission.loads(f.read())

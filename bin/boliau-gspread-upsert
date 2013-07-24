@@ -1,9 +1,9 @@
 #!/usr/bin/env python
-# -*- coding: utf-8 -*
+# -*- encoding=utf8 -*-
 #
-# File: boliau-pycall
+# File: boliau-mongo-insert
 #
-# Copyright (C) 2012  Hsin-Yi Chen (hychen)
+# Copyright (C) 2013  Hsin-Yi Chen (hychen)
 
 # Author(s): Hsin-Yi Chen (hychen) <ossug.hychen@gmail.com>
 
@@ -24,5 +24,5 @@
 # LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
 # FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 # DEALINGS IN THE SOFTWARE.
-from boliau import cmd
-cmd.do_pycall()
+from boliau.plugins.gspread import cmd
+cmd.do_insert()

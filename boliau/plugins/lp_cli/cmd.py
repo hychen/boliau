@@ -28,7 +28,15 @@ import sys
 
 from boliau import cmdlib
 from boliau import actionlib as core_actionlib
+from boliau.plugins.py import actionlib as py_actionlib
 from boliau.plugins.lp_cli import actionlib
+
+def do_init():
+    def f():
+        lp =  actionlib.LaunchpadDatabase()
+        lp.connect()
+    cmd =  cmdlib.as_command(f)
+    print cmd.call(cmd.parse_argv())
 
 def do_format():
     def _get_formaternamees(modname):
@@ -39,7 +47,7 @@ def do_format():
     _formatname_help = "format name avaliable: ({0})".format(
         ', '.join(_get_formaternamees('boliau.plugins.lp_cli.formater')))
 
-    cmd = cmdlib.as_command(core_actionlib.PyCall(), require_stdin=True)
+    cmd = cmdlib.as_command(py_actionlib.PyCall(), require_stdin=True)
     cmd.add_argument('formatname', help=_formatname_help)
     args = cmd.parse_argv()
     args.func = 'boliau.plugins.lp_cli.formater.' + args.formatname
