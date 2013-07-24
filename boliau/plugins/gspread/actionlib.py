@@ -42,7 +42,7 @@ class Upsert(_StreamAction):
 
     link_type =  "Mission -> None"
 
-    data_type = 'Any -> Any'
+    data_type = 'List -> Any'
 
     def __call__(self,  acc,  **opts):
         spreadsheet = opts['spreadsheet']
