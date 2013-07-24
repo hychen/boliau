@@ -9,7 +9,7 @@ def do_insert():
                             require_stdin=True)
     cmd.add_argument('spreadsheet', help="spreadsheet name.")
     cmd.add_argument('--email', help = "user email")
-    cmd.add_argument('--worksheet', help="worksheet name.")
+    cmd.add_argument('--worksheet', help="worksheet name.", default='sheet1')
     args = cmd.parse_argv()
     args.password = getpass.getpass()
     print cmd.call(args, stdin=sys.stdin)
