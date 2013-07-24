@@ -38,12 +38,6 @@ def do_readstdin():
     cmd.parse_argv()
     print cmd.call(stdin=sys.stdin).dump()
 
-def do_pycall():
-    cmd = cmdlib.as_command(actionlib.PyCall(), require_stdin=True)
-    cmd.add_argument('func', help="function name e.x json.dump")
-    args = cmd.parse_argv()
-    print cmd.call(args, stdin=sys.stdin).dump()
-
 def do_lines():
     cmd = cmdlib.as_command(actionlib.Lines(), require_stdin=True)
     cmd.add_argument('--sep')
@@ -67,3 +61,4 @@ def do_map():
     cmd.add_argument('--command')
     args = cmd.parse_argv()
     print cmd.call(args, stdin=sys.stdin).dump()
+
