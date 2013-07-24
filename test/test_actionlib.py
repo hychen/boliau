@@ -28,6 +28,7 @@ import unittest
 import pickle
 
 from boliau import actionlib
+from boliau.plugins.py import actionlib as py_actionlib
 
 class ReconstrucedFunc(unittest.TestCase):
 
@@ -109,16 +110,16 @@ class StreameMissionTestCase(unittest.TestCase):
 
     def test_pycall(self):
         acc = actionlib.Mission({'a':[1,2,3]})
-        m = actionlib.PyCall()(acc, func='json.dumps')
+        m = py_actionlib.PyCall()(acc, func='json.dumps')
         self.assertEquals('{"a": [1, 2, 3]}', m())
 
         acc = actionlib.Mission([1,2,3])
-        m = actionlib.PyCall()(acc, func='sum')
+        m = py_actionlib.PyCall()(acc, func='sum')
         self.assertEquals(6, m())
 
         acc = actionlib.Mission([1, 2, 3])
         self.assertRaises(actionlib.BadMissionMessage,
-                          actionlib.PyCall(), acc, func='a')
+                          py_actionlib.PyCall(), acc, func='a')
 
     def test_chian(self):
         m = actionlib.Map()(actionlib.Mission([1, 2, 3, 4]),

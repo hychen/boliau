@@ -37,7 +37,7 @@ ucltip.regcmds('echo',
                'boliau-concat',
                'boliau-map',
                'boliau-filter',
-               'boliau-pycall')
+               'boliau-py-call')
 
 class SequenceTestCase(test.CmdTestCase):
 
@@ -77,5 +77,5 @@ class SequenceTestCase(test.CmdTestCase):
     def test_pycall(self):
         acc = 'abcdefg'
         self.set(acc)
-        self.pipe.add(boliau_pycall, 'len')
+        self.pipe.add(boliau_py_call, 'len')
         self.assertEquals(len(acc), self.read())

@@ -89,6 +89,16 @@ def sorted_importance(data):
     data = sorted(data, key=_key, reverse=True)
     return data
 
+def as_alist(data, entry_type='bugtasks'):
+    _milestone = lambda e: e and e.date_targeted or ''
+    if entry_type == 'bugtasks':    
+        data = map(lambda e: [e.status,
+                              e.importance, 
+                              e.bug.title,
+                              _milestone(e.milestone),                       
+                              "(http://pad.lv/{})".format(e.bug.id)], data)
+    return data
+    
 def list(data, entry_type='bugtasks'):
     _milestone = lambda e: e and e.date_targeted or ''
     if entry_type == 'bugtasks':
