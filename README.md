@@ -45,7 +45,7 @@ For instance, To count u character of all urls in
 $ awk '{print $2}' /etc/apt/sources.list | grep http | \
   boliau-readstdin  | boliau-lines | \
   boliau-map --command "lambda e: e.count('u')" | \
-  boliau-pycall sum | boliau-print
+  boliau-py-call sum | boliau-print
 141 
 ```
 
@@ -56,7 +56,7 @@ It can be dived into 6 steps.
 3. split string to list by using boliau-lines
 4. counting occurrences of u character of each elements of the list by
 using boliau-map. 
-5. boliau-pycall can apply a python function to the last ouput. In
+5. boliau-py-call can apply a python function to the last ouput. In
 this case, sum is used for getting all occurrences of u character. 
 6. boliau-print is to print the last output to console. the data exits
 Python context.
@@ -85,16 +85,23 @@ $ awk '{print $2}' /etc/apt/sources.list | grep http | \
 To print the url count.
 
 ```
-$ cat get_sourcelist_url.missison | boliau-pycall len | boliau-print
+$ cat get_sourcelist_url.missison | boliau-py-call len | boliau-print
 23
 ```
 
 To create a new mission to less typing.
 
 ```
-$ cat get_sourcelist_url.mission | boliau-pycall len > count_sourcelist_url.mission
+$ cat get_sourcelist_url.mission | boliau-py-call len > count_sourcelist_url.mission
 $ boliau-print < count_sourcelist_url.mission
 23
+```
+
+To create a Python object from json string and print its type 
+
+```
+$ boliau-py-obj --from-string '{"a":1}' | boliau-py-call type | boliau-print
+<type 'dict'>
 ```
 
 ## To operate more data types with plugins.
@@ -131,7 +138,7 @@ $ cat bugtasks.mission | boliau-lp-format today_bugtask_status | boliau-mongo-in
 Get collected data from mongodb and convert to json format.
 
 ```
-boliau-mongo-find testdb test  | boliau-pycall list | boliau-lp-format tojson | boliau-print 
+boliau-mongo-find testdb test  | boliau-py-call list | boliau-lp-format tojson | boliau-print 
 [{"wont-fix": 3, "fix-committed": 4, "in-progress": 2, "fix-released": 8, "date": "2013-01-06T19:07:20.704000", "_id": null, "todo": 4}]
 ```
 
@@ -180,11 +187,6 @@ $ boliau-it --show
 boliau-lp-findpackages ppa:ossug-hychen/ppa | boliau-print
 ```
 
-- A command to create a Python object from json string. 
-
-```
-$ boliau-pyobj {'a':1} | boliau-mongo-insert testdb test
-```
 - simple ui for data selection
 
 ```
@@ -194,7 +196,7 @@ boliau-lp-findpackages ppa:ossug-hychen/ppa | boliau-ui-selection --onlyone | bo
 - Type check
 
 ```
-$ boliau-lp-findpackages ppa:ossug-hychen/ppa | boliau-pycall list | boliau-concat | boliau-typecheck
+$ boliau-lp-findpackages ppa:ossug-hychen/ppa | boliau-py-call list | boliau-concat | boliau-typecheck
 link: None -> Mission -> Mission -> None
 data: None -> PublishedSourcePackage -> list -> str 
 ```
