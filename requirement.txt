@@ -1,0 +1,6 @@
+ucltip
+launchpadlib
+mako
+mock
+nose
+gspread
