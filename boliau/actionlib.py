@@ -28,6 +28,7 @@ import logging
 import pickle
 import marshal
 import types
+import requests
 
 from boliau import util
 
@@ -374,3 +375,37 @@ class Map(_PyEvalAction):
 
 
         
+class Readjson(object):
+
+    desc =  "Read an endpoint as a JSON"
+
+    link_type = "None -> Mission"
+
+    data_type = "Any -> JSON"
+
+    def __init__(self):
+        self.acc = Mission()
+    
+    def __call__(self, endpoint, **opts):
+        params = {}
+        if 'params' in opts and opts.get('params'):
+            _paramsstr = opts['params'].split()
+            for e in _paramsstr:
+                (k, v) = e.split('=')
+                params[k] = v
+        self.acc.add_task('read',
+                           self.maintask,
+                           endpoint,
+                           params = params)
+        return self.acc
+
+    @staticmethod
+    def maintask(self, endpoint, **kwargs):
+        if endpoint.endswith('.json'):
+            import json
+            return json.loads(open(endpoints).read())
+        elif endpoint.startswith('http'):            
+            res = requests.get(endpoint, **kwargs)
+            return res.json()
+        else:
+            raise NotImplemented()

@@ -4,3 +4,5 @@ mako
 mock
 nose
 gspread
+pymongo
+requests
