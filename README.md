@@ -104,9 +104,23 @@ $ boliau-py-obj --from-string '{"a":1}' | boliau-py-call type | boliau-print
 <type 'dict'>
 ```
 
+To read a restful endpoint that the response is a json as a python dict.
+
+```
+boliau-readasjson https://SampleChat.firebaseio-demo.com/.json limit=1 | boliau-print
+{u'data': [{u'content': u'Javascript uses Prototypes instead of classical inheritance.', u'creationDate': 1374408569136, u'detail': u'this is a looooong detailed describtion of the content', u'tags': [{u'color': u'red', u'name': u'JavaScript', u'value': 70}, {u'color': u'blue', u'name': u'Programming', u'value': 90}, {u'color': u'green', u'name': u'Fun'}]}], u'fred': u'uuuuWorld'}
+
+```
+
 ## To operate more data types with plugins.
 
 ### Examples
+
+To read a remote http url as a json
+
+```
+$ boliau-readasjson http://www.news-pac.com/api/topic/蔡英文 limit=1 | boliau-print
+```
 
 To display Launchpad bug information.
 

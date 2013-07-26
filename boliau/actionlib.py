@@ -401,11 +401,11 @@ class Readjson(object):
 
     @staticmethod
     def maintask(self, endpoint, **kwargs):
-        if endpoint.endswith('.json'):
-            import json
-            return json.loads(open(endpoints).read())
-        elif endpoint.startswith('http'):            
+        if endpoint.startswith('http') or endpoint.startswith('https'):            
             res = requests.get(endpoint, **kwargs)
             return res.json()
+        elif endpoint.endswith('.json'):
+            import json
+            return json.loads(open(endpoint).read())
         else:
             raise NotImplemented()
