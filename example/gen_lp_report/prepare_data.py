@@ -1,11 +1,9 @@
 #!/usr/bin/env python
-# -*- coding: utf-8 -*
+# -*- coding: utf-8 -*-
 #
-# File: setup.py
-#
-# Copyright (C) 2012  Hsin-Yi Chen (hychen)
+# Copyright (C) 2012  Hsin-Yi Chen
 
-# Author(s): Hsin-Yi Chen (hychen) <ossug.hychen@gmail.com>
+# Author(s): Hsin-Yi Chen <ossug.hychen@gmail.com>
 
 # Permission is hereby granted, free of charge, to any person obtaining a
 # copy of this software and associated documentation files (the "Software"),
@@ -24,23 +22,14 @@
 # LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
 # FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 # DEALINGS IN THE SOFTWARE.
-import glob
-from distutils.core import setup
+import sys
+from boliau import actionlib
 
-setup(
-    name = 'boliau',
-    version = '0.1.0',
-    author = 'Hsin-Yi Chen 陳信屹 (hychen)',
-    author_email = 'ossug.hychen@gmail.com',
-    url='http://github.com/hychen/boliau',
-    license = 'MIT License',
-    packages=['boliau'],
-    scripts=glob.glob('bin/*'),
-    classifiers = [
-      "Development Status :: 3 - Alpha",
-      "Intended Audience :: Developers",
-      "License :: OSI Approved :: MIT License",
-      "Programming Language :: Python",
-      "Programming Language :: Python :: 2.7",
-    ]
-)
+def preparedata(acc, opts):
+    from boliau.plugins.lp_cli import formater
+    today_status = map(formater.today_bugtask_status, acc)
+    return (acc, today_status)
+
+m = actionlib.Mission.loads(sys.stdin.read())
+m.add_task('preparedata', preparedata, None)
+print m.dump()

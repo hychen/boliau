@@ -1,9 +1,9 @@
 #!/usr/bin/env python
-# -*- coding: utf-8 -*
+# -*- encoding=utf8 -*-
 #
-# File: setup.py
+# File: __init__.py
 #
-# Copyright (C) 2012  Hsin-Yi Chen (hychen)
+# Copyright (C) 2013  Hsin-Yi Chen (hychen)
 
 # Author(s): Hsin-Yi Chen (hychen) <ossug.hychen@gmail.com>
 
@@ -24,23 +24,3 @@
 # LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
 # FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 # DEALINGS IN THE SOFTWARE.
-import glob
-from distutils.core import setup
-
-setup(
-    name = 'boliau',
-    version = '0.1.0',
-    author = 'Hsin-Yi Chen 陳信屹 (hychen)',
-    author_email = 'ossug.hychen@gmail.com',
-    url='http://github.com/hychen/boliau',
-    license = 'MIT License',
-    packages=['boliau'],
-    scripts=glob.glob('bin/*'),
-    classifiers = [
-      "Development Status :: 3 - Alpha",
-      "Intended Audience :: Developers",
-      "License :: OSI Approved :: MIT License",
-      "Programming Language :: Python",
-      "Programming Language :: Python :: 2.7",
-    ]
-)

@@ -67,3 +67,9 @@ def do_readjson():
     cmd.add_argument('endpoint')
     cmd.add_argument('params', nargs='?')
     print cmd.call(cmd.parse_argv()).dump()
+
+def do_arr_combine():
+    cmd = cmdlib.as_command(actionlib.ArrCombine())
+    cmd.add_argument('missions', nargs='*')
+    args = cmd.parse_argv()
+    print cmd.call(args).dump()

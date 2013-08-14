@@ -1,0 +1,27 @@
+<%
+bts = btsdata[0]
+btsstatus = btsdata[1]
+%>
+<html>
+<body>
+<h1>${title}</h1>
+
+<h2> Bug Tasks. </h2>
+
+<ul>
+${mkli(bts[0])}
+${mkli(bts[1])}
+</ul>
+
+<h2> Bug Today Status </h2>
+TODO: ${btsstatus[0]['todo'] + btsstatus[1]['todo']}
+
+<%def name="mkli(bts)">
+% for bt in bts:
+	<li>${bt.title}, ${bt.status}, ${bt.importance} </li>
+% endfor
+</%def>
+
+</body>
+</html>
+

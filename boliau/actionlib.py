@@ -373,8 +373,10 @@ class Map(_PyEvalAction):
     def maintask(acc, command):
         return map(eval_if_need(command), acc)
 
+def load_mission(fname):
+    with open(fname) as f:
+        return Mission.loads(f.read())
 
-        
 class Readjson(object):
 
     desc =  "Read an endpoint as a JSON"
@@ -409,3 +411,19 @@ class Readjson(object):
             return json.loads(open(endpoint).read())
         else:
             raise NotImplemented()
+
+def arr_combine(acc, missions):
+    return map(lambda m : m(), map(load_mission, missions))
+
+class ArrCombine(object):
+
+    desc = "Combine output of Missions"
+
+    link_type = "None -> Mission"
+
+    data_type = "None -> List Any"
+
+    def __call__(self, **opts):
+        acc = Mission()
+        acc.add_task('arr-combine', arr_combine, **opts)
+        return acc

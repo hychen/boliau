@@ -6,7 +6,7 @@ The project name BoLiau comes from the spelling pronunciation of 無聊
 in 台灣閩南語, because the author Chen Hsin-Yi developed when he was
 trying to eliminate tedious repetition actions.
 
-Those actions are classifier to two kind: Task and Mission.
+Those actions has two kind: Task and Mission.
 
 Each task is a step of steps to archive a mission such as 
 collecting data from website to generate a report, batch changing bug
@@ -169,6 +169,7 @@ Dependency
 - mock
 - launchpadlib
 - ucltip
+- mako
 - gspread
 
 ### Development
@@ -196,6 +197,7 @@ The project is inspired by many ideas in functional programming.
 - [Lambda Function](http://en.wikipedia.org/wiki/Anonymous_function)
 - [Closure](http://en.wikipedia.org/wiki/Closure_(computer_science))
 - [Function Composition](http://en.wikipedia.org/wiki/Function_composition_(computer_science))
+- [Haskell/Understanding arrows](http://en.wikibooks.org/wiki/Haskell/Understanding_arrows#.2A.2A.2A)
 
 ### Ideas pool
 
