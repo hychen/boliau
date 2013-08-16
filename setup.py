@@ -34,7 +34,7 @@ setup(
     author_email = 'ossug.hychen@gmail.com',
     url='http://github.com/hychen/boliau',
     license = 'MIT License',
-    packages=['boliau'],
+    packages=['boliau', 'boliau/plugins'],
     scripts=glob.glob('bin/*'),
     classifiers = [
       "Development Status :: 3 - Alpha",
