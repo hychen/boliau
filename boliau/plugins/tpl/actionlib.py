@@ -24,6 +24,8 @@
 # LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
 # FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 # DEALINGS IN THE SOFTWARE.
+import codecs
+
 from mako.template import Template
 from boliau import actionlib
 
@@ -62,7 +64,7 @@ class Sub(object):
             result = Template(f.read()).render(**variables)
 
         if opts['output']:
-            with open(opts['output'], 'w') as fw:
+            with codecs.open(opts['output'], 'w', 'utf-8') as fw:
                 fw.write(result)
             return "created {0}".format(opts['output'])
         else:
